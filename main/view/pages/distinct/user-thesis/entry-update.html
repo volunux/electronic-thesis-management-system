@@ -1,0 +1,163 @@
+<div class ='entry-changes'>
+
+	<h2 class ="bold" > {{title}} Entry Update </h2>
+
+	<form method ='POST'>
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ='form-group'>
+
+			<label for ='title'> Title : * </label>
+
+			<input id ='title' name ='title' value ='{{entry.title}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='price'> Price : * </label>
+
+			<input id ='price' name ='price' value ='{{entry.price}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='number_of_page'> Number of Page : * </label>
+
+			<input id ='number_of_page' name ='number_of_page' value ='{{entry.number_of_page}}' class ='form-control'/>
+
+		</div>
+
+		{{#whenAlg thesisGrades.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="grade"> Grade : * </label>
+
+			<select id ="grade" name ="grade" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each thesisGrades}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.grade}} selected ="selected" {{/whenAlg}}> {{name}} - {{description}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		{{#whenAlg departments.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="department"> Department : * </label>
+
+			<select id ="department" name ="department" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each departments}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.department}} selected ="selected" {{/whenAlg}}> {{name}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		{{#whenAlg faculties.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="faculty"> Faculty : * </label>
+
+			<select id ="faculty" name ="faculty" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each faculties}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.faculty}} selected ="selected" {{/whenAlg}}> {{name}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		{{#whenAlg publishers.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="publisher"> Publisher : * </label>
+
+			<select id ="publisher" name ="publisher" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each publishers}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.publisher}} selected ="selected" {{/whenAlg}}> {{name}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ='form-group'>
+
+			<label for ='supervisor'> Supervisor : * </label>
+
+			<input id ='supervisor' name ='supervisor' value ='{{entry.supervisor}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='publication_year'> Publication Year : * </label>
+
+			<input id ='publication_year' name ='publication_year' value ='{{entry.publication_year}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='author_name'> Author Name : </label>
+
+			<input id ='author_name' name ='author_name' value ='{{entry.author_name}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='content'> Abstract : * </label>
+
+			<textarea id ='rich-editor' name ='content' >{{entry.content}}</textarea>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<button type ='submit' class ='btn-submit' > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

@@ -1,0 +1,646 @@
+@import './internal.css' ;
+@import './user.css';
+@import './internal-one.css';
+@import './internal-two.css';
+@import './internal-five.css';
+@import './cart.css';
+@import './general.css';
+@import './w3checkbox.css';
+@import './button.css';
+@import './checkout.css';
+@import './order.css';
+@import './int-emtype.css';
+
+@font-face {
+
+font-family: 'RobotoRegular';
+src : url(./fonts/Roboto-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'RobotoBold';
+src : url(./fonts/Roboto-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'AbelRegular';
+src : url(./fonts/Abel/Abel-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'DosisRegular';
+src : url(./fonts/Dosis/Dosis-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'DosisBold';
+src : url(./fonts/Dosis/Dosis-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'DosisLight';
+src : url(./fonts/Dosis/Dosis-Light.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Hind';
+src : url(./fonts/Hind/Hind-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'NotoSans';
+src : url(./fonts/Noto_Sans/NotoSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'NotoSansBold';
+src : url(./fonts/Noto_Sans/NotoSans-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'NunitoSans';
+src : url(./fonts/Nunito_Sans/NunitoSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'NunitoSansBold';
+src : url(./fonts/Nunito_Sans/NunitoSans-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Quicksand';
+src : url(./fonts/Quicksand/static/Quicksand-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Lato';
+src : url(./fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'LatoBold';
+src : url(./fonts/Lato/Lato-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'RobotoLight';
+src : url(./fonts/Roboto-Light.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Oswald';
+src : url(./fonts/Oswald/static/Oswald-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'OswaldBold';
+src : url(./fonts/Oswald/static/Oswald-Bold.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'OswaldLight';
+src : url(./fonts/Oswald/static/Oswald-Light.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Indieflower';
+src : url(./fonts/indieflower.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'Libre';
+src : url(./fonts/Libre/LibreBaskerville-Regular.ttf) format('truetype');
+}
+
+@font-face {
+
+font-family: 'LibreBold';
+src : url(./fonts/Libre/LibreBaskerville-Bold.ttf) format('truetype');
+}
+
+
+* {
+
+	font-family : "RobotoRegular";
+	font-size : 100%;
+	font-weight : normal;
+	font-style : normal;
+	box-sizing : border-box;
+	padding : 0;
+	border : 0;
+	margin : 0;
+	text-align : left;
+	border-collapse : collapse;
+	text-shadow : none;
+}
+
+*:focus , *:active {
+
+		text-shadow : none;
+		background : none;
+}
+
+body {
+
+	width : 95%;
+	overflow : auto;
+	margin : 10px auto;
+}
+
+a {
+
+	text-decoration : none;
+}
+
+h1 , h2 , h3 , h4 , h5 , h6 {
+
+	margin-bottom : 20px;
+}
+
+h4 {
+
+	font-size : 13px;
+}
+
+p {
+
+	font-size : 13px;
+	line-height : 2.5em;
+}
+
+label , select , input , textarea , button , a , span , .validation-errors ul li {
+
+		font-size : 13px;
+}
+
+img {
+
+	max-width : 100%;
+	max-height : auto;
+	margin : auto;
+}
+
+/*col:nth-of-type(6) {
+
+	width : 300px;
+}*/
+
+.center {
+
+	text-align : center;
+}
+
+.left {
+
+	text-align : left;
+}
+
+.right {
+
+	text-align : right;
+}
+
+strong , .bold {
+
+	font-family : "LibreBold" !important;
+}
+
+#entry-error h2 {
+
+	font-family : "LatoBold";
+	font-size : 22px;
+}
+
+#navbar {
+
+	display : block;
+	margin-bottom : 30px;
+}
+
+#navbar ul {
+
+	list-style-type : none;
+}
+
+#navbar ul li {
+
+	font-size : 12px;
+	display : inline-block;
+	width : 150px;
+	margin-right : 20px;
+	border-radius : 6px;
+	background-color : #f3f3f3;
+	padding : 10px;
+}
+
+#navbar li a {
+
+	color : black;
+	display : inline-block;
+	width : 100%;
+	text-align : center;
+	line-height : 1.0em;
+}
+
+#navbar li a:hover {
+
+	color : purple;
+}
+
+.square-list-style-type {
+
+	list-style-type : square;
+}
+
+.validation-errors ul {
+
+	margin : 0px 0px 20px 20px;
+}
+
+.validation-errors *:not(h4) {
+
+	line-height : 2.5em;
+}
+
+.entries {
+
+	font-size : 75%;
+	width : 1270px;
+	table-layout : fixed;
+	margin : 40px 0px 40px 0px;
+}
+
+.entries caption {
+
+	margin-bottom : 20px;
+	font-size : 18px;
+	font-family : "Arial";
+}
+
+.entries thead th {
+
+	padding-bottom : 20px;
+	font-family : "RobotoBold";
+}
+
+.entries-options {
+
+	margin-bottom : 30px;
+	overflow : hidden;
+}
+
+.changes-option {
+
+	background-color : #f9f9f9;
+	color : #827f7f;
+	border-radius : 6px;
+	text-align : center;
+	padding : 10px;	
+}
+
+.delete-option {
+
+	float : left;
+}
+
+.delete-option , .next , .prev {
+
+	width : 70px;
+}
+
+.pagination {
+
+	float : right;
+}
+
+.next , .prev {
+
+	margin-right : 10px;
+	display : inline-block;
+} 
+
+.clearboth {
+
+	clear : both;
+	width : 0;
+	height : 0;
+	display: block;
+	box-sizing : border-box;
+}
+
+.search-options {
+
+	margin-bottom : 30px;
+}
+
+.search-input {
+
+	background-color : whitesmoke;
+	color : gray;
+}
+
+.search-input , .search-select-options {
+
+	width : 20%;
+	border-radius : 4px;
+	display : inline-block;
+	padding : 10px;
+}
+
+.search-select-options {
+
+	border : 2px double lightgray;
+	padding : 8px;
+}
+
+.search-input:focus {
+
+	background-color : white;
+	color : black;
+}
+
+.entry-detail h1 {
+
+	font-size : 18px;
+}
+
+.entry-detail p {
+
+	line-height : 2.0em;
+	font-size : 18px;
+}
+
+.entry-changes > h1 {
+
+	margin-bottom : 30px;
+}
+
+.entry-changes .form-group {
+
+	margin-bottom : 20px;
+}
+
+.entry-changes .form-control {
+
+	display : block;
+	border-radius : 4px;
+	width : 680px;
+	background-color : whitesmoke;
+	color : gray;
+	height : 40px;
+	padding : 10px;
+}
+
+.form-control-checkbox {
+
+	height : auto !important;
+	background-color : transparent !important;
+}
+
+.form-control-checkbox label {
+
+	padding-top : 10px;
+}
+
+.form-control-checkbox p {
+
+	line-height : 0em;
+	display : inline-block;
+	color : black;
+	width : 45%;
+	padding : 10px;
+}
+
+
+.entry-changes .form-control-textarea {
+
+	resize : none;
+	height : 80px;
+}
+
+.entry-changes .form-group label {
+
+	margin-bottom : 20px;
+	display : block;
+}
+
+.entry-changes .form-control:focus {
+
+	background-color : white;
+	color : black;
+}
+
+
+
+.delete-menu {
+
+	overflow : hidden;
+	float : left;
+}
+
+.flash-message {
+
+		line-height : 2.0em;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom : 10px;
+}
+
+.flash-message-success {
+
+    background-color: lightgreen;
+}
+
+.entries-delete-status {
+
+	display : inline-block;
+	padding : 10px; 
+}
+
+th , td {
+
+	font-family : "Lato";
+	vertical-align : middle;
+}
+
+#entry-detail .parameter {
+
+	width : 45%;
+}
+
+#entry-detail .data {
+
+	width : 55%;
+}
+
+#entry-detail td {
+
+	line-height : 2.5em;
+}
+
+#entry-view {
+
+width : 700px;
+table-layout : fixed;
+}
+
+#entry-view tbody th , #entry-view tbody td {
+
+	border : 1px solid #f3f3f3;
+	padding : 20px;
+}
+
+#main-app-logo {
+
+	width : 100%;
+	display : block;
+	margin : 0px auto 10px;
+	width : 120px;
+	height : 120px;
+	min-width : 120px;
+	max-width : 120px;
+}
+
+#footer {
+
+	clear : both;
+	margin-top : 30px;
+}
+
+#dashboard ul {
+
+	list-style-type : none;
+	width : 90%;
+	padding : 5px;
+	margin : 20px auto 0px;
+}
+
+#dashboard li {
+
+	display : inline-block;
+	width : 45%;
+	height : 120px;
+	background-color : #f9f9f9;
+	border : 2px solid #f3f3f3;
+	border-radius : 6px;
+	margin : 0px 20px 35px 0px;
+	padding : 0px 5px;
+}
+
+#dashboard a {
+
+	font-size : 12px;
+	font-weight : bold;
+	display : block;
+	color : #827f7f;
+	line-height : 120px;
+}
+
+#dashboard li:hover {
+
+	background-color : #f3f3f3;
+}
+
+#dashboard li a:hover {
+
+	color : black;
+}
+
+.entry-check-parent {
+
+	z-index : 10;
+	position : relative;
+	display : inline-block;
+}
+
+.entry-check {
+
+	position : relative;
+	vertical-align: middle;
+	width : 20px;
+	height : 20px;
+	background-color : white;
+	border : 2px solid #f1f1f1;
+	border-radius : 50%;
+	display : inline-block;
+}
+
+.entry-check-2 {
+
+	width : 25px;
+	height : 25px;
+}
+
+.entry-check input[type=checkbox] {
+
+	display : inline-block;
+	z-index: -1;
+	position : absolute;
+	left : 2px;
+}
+
+.entry-check-text {
+
+	margin-left : 10px;
+}
+
+.entry-checked {
+
+	position : absolute;
+	width : 8px;
+	height : 50%;
+	top : 4px;
+	left : 4px;
+	background-color : black;
+	border-radius : 50%;
+}
+
+.float-left {
+
+	float : left;
+}
+
+.float-right {
+
+	float : right;
+}
+
+.clear {
+
+	clear : both;
+}
+
+.passport {
+
+	width : 100px;
+	height : 100px;
+}
+
+.signature {
+
+	width : 80px;
+	height : 80px;
+}

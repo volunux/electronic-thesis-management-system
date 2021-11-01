@@ -1,0 +1,26 @@
+export const thesisReply : string =
+
+`
+DROP TABLE IF EXISTS THESIS_REPLY;
+CREATE TABLE IF NOT EXISTS THESIS_REPLY (
+
+thesis_reply_id SERIAL NOT NULL,
+text VARCHAR(500) NOT NULL,
+
+comment_author_name VARCHAR(150) NOT NULL DEFAULT 'Anonymous',
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+thesis_reply_no INT UNIQUE NOT NULL,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+comment_id INT NOT NULL,
+entry_id INT NOT NULL,
+user_id INT NOT NULL,
+status_id INT NOT NULL,
+
+CONSTRAINT THESIS_REPLY_PKEY PRIMARY KEY(thesis_reply_id)	
+
+)	
+
+`;

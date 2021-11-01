@@ -1,0 +1,329 @@
+{
+    "info": {
+        "_postman_id": "c4a679f5-f42c-4e1d-986d-655fde8a5aa7",
+        "name": "RRR Copy",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Generate RRR Demo",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var merchantId = \"2547916\";",
+                            "var apiKey = \"1946\"",
+                            "var serviceTypeId = \"4430731\"",
+                            "var d = new Date();",
+                            "var orderId = d.getTime();",
+                            "var totalAmount = \"20000\";",
+                            "",
+                            "var apiHash = CryptoJS.SHA512(merchantId+ serviceTypeId+ orderId+totalAmount+apiKey);",
+                            "",
+                            "postman.setGlobalVariable('merchantId', merchantId);",
+                            "postman.setGlobalVariable('apiKey', apiKey);",
+                            "postman.setGlobalVariable('serviceTypeId', serviceTypeId);",
+                            "postman.setGlobalVariable('orderId', orderId);",
+                            "postman.setGlobalVariable('totalAmount', totalAmount);",
+                            "postman.setGlobalVariable('apiHash', apiHash);"
+                        ]
+                    }
+                }
+            ],
+            "id": "03577e69-0763-4a27-b405-9559b13161bc",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "remitaConsumerKey={{merchantId}},remitaConsumerToken={{apiHash}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{ \n\t\"serviceTypeId\": \"{{serviceTypeId}}\",\n\t\"amount\": \"{{totalAmount}}\",\n\t\"orderId\": \"{{orderId}}\",\n\t\"payerName\": \"Michael Alozie\",\n\t\"payerEmail\": \"alozie@systemspecs.com.ng\",\n\t\"payerPhone\": \"09062067384\",\n\t\"description\": \"Payment for Donation 3\"\n}"
+                },
+                "url": "https://remitademo.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Generate RRR Demo New endpoint",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var merchantId = \"2547916\";",
+                            "var apiKey = \"1946\"",
+                            "var serviceTypeId = \"4430731\"",
+                            "var d = new Date();",
+                            "var orderId = d.getTime();",
+                            "var totalAmount = \"20000\";",
+                            "",
+                            "var apiHash = CryptoJS.SHA512(merchantId+ serviceTypeId+ orderId+totalAmount+apiKey);",
+                            "",
+                            "postman.setGlobalVariable('merchantId', merchantId);",
+                            "postman.setGlobalVariable('apiKey', apiKey);",
+                            "postman.setGlobalVariable('serviceTypeId', serviceTypeId);",
+                            "postman.setGlobalVariable('orderId', orderId);",
+                            "postman.setGlobalVariable('totalAmount', totalAmount);",
+                            "postman.setGlobalVariable('apiHash', apiHash);"
+                        ]
+                    }
+                }
+            ],
+            "id": "0eed2e54-a85c-4aa9-9787-c54193793757",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "remitaConsumerKey={{merchantId}},remitaConsumerToken={{apiHash}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{ \n\t\"serviceTypeId\": \"{{serviceTypeId}}\",\n\t\"amount\": \"{{totalAmount}}\",\n\t\"orderId\": \"{{orderId}}\",\n\t\"payerName\": \"Michael Alozie\",\n\t\"payerEmail\": \"alozie@systemspecs.com.ng\",\n\t\"payerPhone\": \"09062067384\",\n\t\"description\": \"Payment for Donation 3\"\n}"
+                },
+                "url": "https://remitademo.net/remita/exapp/api/v1/send/api/echannelsvc/merchant/api/paymentinit",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Get RRR Status Demo Old Endpoint",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var merchantId = \"2547916\";",
+                            "var apiKey = \"1946\"",
+                            "var rrr = \"320007728747\"",
+                            "",
+                            "var apiHash = CryptoJS.SHA512(rrr + apiKey + merchantId);",
+                            "",
+                            "postman.setGlobalVariable('merchantId', merchantId);",
+                            "postman.setGlobalVariable('rrr', rrr);",
+                            "postman.setGlobalVariable('apiKey', apiKey);",
+                            "postman.setGlobalVariable('apiHash', apiHash);"
+                        ]
+                    }
+                }
+            ],
+            "id": "df2f1e62-1ff8-48b5-8550-9ca092bfa601",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "remitaConsumerKey={{merchantId}},remitaConsumerToken={{apiHash}}"
+                    }
+                ],
+                "url": "https://remitademo.net/remita/ecomm/{{merchantId}}/{{rrr}}/{{apiHash}}/status.reg",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Get RRR Status Demo New Endpoint",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var merchantId = \"2547916\";",
+                            "var apiKey = \"1946\"",
+                            "var rrr = \"320007728747\"",
+                            "",
+                            "var apiHash = CryptoJS.SHA512(rrr + apiKey + merchantId);",
+                            "",
+                            "postman.setGlobalVariable('merchantId', merchantId);",
+                            "postman.setGlobalVariable('rrr', rrr);",
+                            "postman.setGlobalVariable('apiKey', apiKey);",
+                            "postman.setGlobalVariable('apiHash', apiHash);"
+                        ]
+                    }
+                }
+            ],
+            "id": "cd131831-7a48-4709-9e72-8550455992a8",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "remitaConsumerKey={{merchantId}},remitaConsumerToken={{apiHash}}"
+                    }
+                ],
+                "url": "https://remitademo.net/remita/exapp/api/v1/send/api/echannelsvc/{{merchantId}}/{{rrr}}/{{apiHash}}/status.reg",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Get OrderId Status Demo",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "var merchantId = \"2547916\";",
+                            "var apiKey = \"1946\"",
+                            "var orderId = \"200007680136\"",
+                            "",
+                            "var apiHash = CryptoJS.SHA512(orderId + apiKey + merchantId);",
+                            "",
+                            "postman.setGlobalVariable('merchantId', merchantId);",
+                            "postman.setGlobalVariable('orderId', orderId);",
+                            "postman.setGlobalVariable('apiKey', apiKey);",
+                            "postman.setGlobalVariable('apiHash', apiHash);"
+                        ]
+                    }
+                }
+            ],
+            "id": "a4c97292-2fd5-475b-99f3-a60a756a6a64",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "remitaConsumerKey={{merchantId}},remitaConsumerToken={{apiHash}}"
+                    }
+                ],
+                "url": "https://remitademo.net/remita/ecomm/{{merchantId}}/{{orderId}}/{{apiHash}}/orderstatus.reg",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Payment Notification Test",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "//var url = \"http://napamsv22.autoreglive.com/App_Application/PaymentNotification.aspx\";",
+                            "var url = \"http://ngn.charisoil.com/Payment_Authenticator.aspx?\";",
+                            "var serviceTypeId = \"100471\";",
+                            "var rrr = \"310007728723\";",
+                            "var orderRef = \"100471\";",
+                            "var amount = 15000.00;",
+                            "var date = \"28/01/2019\";",
+                            "var payerName = \"Dijimi  Fakoya-Smith\";",
+                            "var payerPhoneNumber = \"2348023365123\";",
+                            "var payerEmail = \"taiwofakoya_smith@yahoo.com\";",
+                            "",
+                            "postman.setGlobalVariable('url', url);",
+                            "postman.setGlobalVariable('rrr', rrr);",
+                            "postman.setGlobalVariable('orderRef', orderRef);",
+                            "postman.setGlobalVariable('serviceTypeId', serviceTypeId);",
+                            "postman.setGlobalVariable('amount', amount);",
+                            "postman.setGlobalVariable('date', date);",
+                            "postman.setGlobalVariable('payerName', payerName);",
+                            "postman.setGlobalVariable('payerPhoneNumber', payerPhoneNumber);",
+                            "postman.setGlobalVariable('payerEmail', payerEmail);",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "id": "73b0dbde-7d69-4859-8852-63927fd1e0ad",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "[\r\n {  \r\n    \"rrr\":\"{{rrr}}\",\r\n    \"channel\":\"BRANCH\",\r\n    \"amount\":\"{{amount}}\",\r\n    \"transactiondate\":\"{{date}}\",\r\n    \"debitdate\":\"{{date}}\",\r\n    \"bank\":\"011\",\r\n    \"branch\":\"011152387\",\r\n    \"serviceTypeId\":\"{{serviceTypeId}}\",\r\n    \"dateRequested\":\"{{date}}\",\r\n    \"orderRef\":\"{{orderRef}}\",\r\n    \"payerName\":\"{{payerName}}\",\r\n    \"payerPhoneNumber\":\"{{payerPhoneNumber}}\",\r\n    \"payerEmail\":\"{{payerEmail}}\",\r\n    \"uniqueIdentifier\":\"\"\r\n  }\r\n]\r\n"
+                },
+                "url": "{{url}}",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        },
+        {
+            "name": "Payment Notification Test Copy",
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "//var url = \"http://napamsv22.autoreglive.com/App_Application/PaymentNotification.aspx\";",
+                            "var url = \"http://ngn.charisoil.com/Payment_Authenticator.aspx?\";",
+                            "var serviceTypeId = \"100471\";",
+                            "var rrr = \"310007728723\";",
+                            "var orderRef = \"100471\";",
+                            "var amount = 15000.00;",
+                            "var date = \"28/01/2019\";",
+                            "var payerName = \"Dijimi  Fakoya-Smith\";",
+                            "var payerPhoneNumber = \"2348023365123\";",
+                            "var payerEmail = \"taiwofakoya_smith@yahoo.com\";",
+                            "",
+                            "postman.setGlobalVariable('url', url);",
+                            "postman.setGlobalVariable('rrr', rrr);",
+                            "postman.setGlobalVariable('orderRef', orderRef);",
+                            "postman.setGlobalVariable('serviceTypeId', serviceTypeId);",
+                            "postman.setGlobalVariable('amount', amount);",
+                            "postman.setGlobalVariable('date', date);",
+                            "postman.setGlobalVariable('payerName', payerName);",
+                            "postman.setGlobalVariable('payerPhoneNumber', payerPhoneNumber);",
+                            "postman.setGlobalVariable('payerEmail', payerEmail);",
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "id": "78e2582f-d1bc-4ea9-8cba-225d9553ea40",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "[\r\n {  \r\n    \"rrr\":\"{{rrr}}\",\r\n    \"channel\":\"BRANCH\",\r\n    \"amount\":\"{{amount}}\",\r\n    \"transactiondate\":\"{{date}}\",\r\n    \"debitdate\":\"{{date}}\",\r\n    \"bank\":\"011\",\r\n    \"branch\":\"011152387\",\r\n    \"serviceTypeId\":\"{{serviceTypeId}}\",\r\n    \"dateRequested\":\"{{date}}\",\r\n    \"orderRef\":\"{{orderRef}}\",\r\n    \"payerName\":\"{{payerName}}\",\r\n    \"payerPhoneNumber\":\"{{payerPhoneNumber}}\",\r\n    \"payerEmail\":\"{{payerEmail}}\",\r\n    \"uniqueIdentifier\":\"\"\r\n  }\r\n]\r\n"
+                },
+                "url": "{{url}}",
+                "description": "Endpoint is used to generate an RRR on Remita demo environment"
+            },
+            "response": []
+        }
+    ]
+}

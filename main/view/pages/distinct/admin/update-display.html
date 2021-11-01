@@ -1,0 +1,49 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Update </h1>
+
+	<form method ="POST" enctype ="multipart/form-data">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		{{#whenAlg displays.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="display_type"> Type : * </label>
+
+			<select id ="display_type" name ="display_type" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each displays}}
+
+				<option value ="{{name}}" {{#whenAlg _id "==" ../entry.display_type}} selected ="selected" {{/whenAlg}}> {{title}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ="form-group">
+
+			<label for ="display_picture"> Picture : * </label>
+
+			<input type ="file" accept ="image/*" id ="display_picture" name ="display_picture" value ="{{entry.display_picture}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

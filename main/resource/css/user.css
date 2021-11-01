@@ -1,0 +1,77 @@
+#int-user-entries {
+
+}
+
+#int-user-entries col:nth-of-type(1) {
+
+	width : 3%;
+}
+
+#int-user-entries col:nth-of-type(2) , #int-user-entries col:nth-of-type(3) {
+
+	width : 14%;
+}
+
+#int-user-entries col:nth-of-type(4) , #int-user-entries col:nth-of-type(5) , #int-user-entries col:nth-of-type(6) {
+
+	width : 7%;
+}
+
+#int-user-entries col:nth-of-type(7) {
+
+	width : 12%;
+}
+
+#int-user-entries col:nth-of-type(8) {
+
+	width : 7%;
+}
+
+#int-user-entries col:nth-of-type(9) {
+
+	width : 31%;
+}
+
+#int-user-entries td {
+
+	padding : 8px 5px;
+}
+
+#int-user-entries td {
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;  
+}
+
+#int-user-entries tr:hover {
+
+	background-color : #fdfdfd;
+}
+
+#int-user-detail table {
+
+	width : 1200px;
+	table-layout : fixed;
+}
+
+#int-user-detail col:nth-of-type(1) {
+
+	width : 25%;
+}
+
+#int-user-detail col:nth-of-type(2) {
+
+	width : 75%;
+}
+
+#int-user-detail th , #int-user-detail td {
+
+	line-height : 2.0em;
+}
+
+#int-user-detail td , #int-user-detail th {
+
+	padding : 10px;
+	word-wrap: break-word;
+}

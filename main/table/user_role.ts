@@ -1,0 +1,16 @@
+export const userRole : string = 
+
+`
+DROP TABLE IF EXISTS USER_ROLE;
+CREATE TABLE IF NOT EXISTS USER_ROLE (
+
+_id SERIAL NOT NULL,
+user_id INT NOT NULL,
+role_id INT NOT NULL,
+
+CONSTRAINT USER_ROLE_PKEY PRIMARY KEY(user_id , role_id)	
+
+)	
+
+
+`;

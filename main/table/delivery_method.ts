@@ -1,0 +1,23 @@
+export const delivery_method : string = 
+
+`
+DROP TABLE IF EXISTS DELIVERY_METHOD;
+CREATE TABLE IF NOT EXISTS DELIVERY_METHOD (
+
+delivery_method_id SERIAL NOT NULL,
+title VARCHAR(150) NOT NULL,
+description VARCHAR(250) DEFAULT 'Not Available',
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+delivery_method_no INT UNIQUE NOT NULL ,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+user_id INT NOT NULL,
+status_id INT NOT NULL,	
+
+CONSTRAINT DELIVERY_METHOD_PKEY PRIMARY KEY(delivery_method_id)
+
+)
+
+`;

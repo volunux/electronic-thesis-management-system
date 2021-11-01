@@ -1,0 +1,85 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Update </h2>
+
+	<form method ="POST">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ="form-group">
+
+			<label for ="first_name"> First Name : * </label>
+
+			<input id ="first_name" name ="first_name" value ="{{entry.first_name}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="last_name"> Last Name : * </label>
+
+			<input id ="last_name" name ="last_name" value ="{{entry.last_name}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="matriculation_number"> Matriculation Number : * </label>
+
+			<input id ="matriculation_number" name ="matriculation_number" placeholder ="0000/00/0000DA" value ="{{entry.matriculation_number}}" class ="form-control"/>
+
+		</div>
+
+		{{#whenAlg roles.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="role"> User Role : *  </label>
+
+			<div class ="form-control form-control-checkbox">
+
+			{{#each roles}}
+			
+			<p>
+
+				<label class="cust-checkbox-container">	{{name}} 
+				  <input type="checkbox" value ='{{_id}}' name="role"
+
+				{{#each ../entry.role}}
+
+					{{#whenAlg this "==" ../_id}} checked ="checked" {{/whenAlg}}
+
+				{{/each}}/>
+
+				  <span class="checkmark"></span>
+				</label>
+
+			</p>
+
+			{{/each}}
+
+		</div>
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ="form-group">
+
+		<input type ="hidden" id ="" name ="user_role_id" value ="{{entry._id}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

@@ -1,0 +1,93 @@
+<h2 class ="bold"> Cart Entries </h2>
+
+	<div class ="entries-options">
+
+	</div>
+
+	{{#whenAlg entries.length '>' 0}}
+
+	<table id ="cart" class ="entries">
+
+		<colgroup>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>Index</th>
+				<th>Name</th>
+				<th class ="center">Product Id</th>
+				<th class ="center">Quantity</th>
+				<th class ="center">Unit Price</th>
+				<th class ="center">Amount</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{{#each entries}}
+
+			
+			<tr>
+					<form action ="/cart/update/" method ="POST" enctype="application/x-www-form-urlencoded">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+	
+				<td>{{indexIncr @index}}</td>
+				<td title ="{{name}}">{{entryValid title}}</td>
+				<td class ="center">{{entryValid item_id}}</td>
+
+				<td><input type ="text" class ="center quantity-update" name ="quantity" value ="{{quantity}}" /></td>
+
+				<td class ="center">{{entryValid unit_price}}</td>
+				<td class ="center">{{entryValid amount}}</td>
+				<td class ="changes center">
+
+						<input type ="hidden" name ="item_id" value ="{{item_id}}"/>
+
+						<button type ="submit"> Update </button>
+					<a href ="cart/delete/{{item_id}}">Delete</a>
+				<label class="cust-checkbox-container">
+				  <input type="checkbox" value ='{{num}}' name="entry-item">
+				  <span class="checkmark"></span>
+				</label>
+				</td>
+			</tr>
+					</form>
+			
+
+			{{/each}}
+		</tbody>
+
+		<tfoot>
+
+			<tr>
+
+				<td class ="bold center" colspan ="2">Total Items : </td>
+				<td class ="bold center" colspan ="1"> Number : {{total_item}} </td>
+				<td class ="bold center" colspan ="1"> Quantity : {{total_quantity}} </td>
+				<td class ="bold center " colspan="2"> Price : {{total_amount}} </td>
+
+				<td> <a type ="submit" href ="/cart/checkout" class ="checkout-btn" > Proceed to checkout </a> </p> </td>
+
+			</tr>
+
+		</tfoot>
+
+	</table>
+
+	{{/whenAlg}}
+
+		{{> no-entries}}
+
+	<div class ="entries-options">
+
+	{{> delete-option}}
+
+	{{> pagination}}
+
+	</div>

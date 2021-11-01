@@ -1,0 +1,41 @@
+#int-emtype-entries {
+
+}
+
+#int-emtype-entries col:nth-of-type(1) {
+
+	width : 4%;
+}
+
+#int-emtype-entries col:nth-of-type(2) {
+
+	width : 36%;
+}
+
+#int-emtype-entries col:nth-of-type(3) {
+
+	width : 15%;
+}
+
+#int-emtype-entries col:nth-of-type(4) {
+
+	width : 8%;
+}
+
+#int-emtype-entries col:nth-of-type(5) {
+
+	width : 30%;
+}
+
+#int-emtype-entries td {
+
+	padding : 8px 5px;
+}
+
+#int-emtype-entries tr > td:nth-child(2) {
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;  
+}
+

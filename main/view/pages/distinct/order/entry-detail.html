@@ -1,0 +1,77 @@
+<div id ='order-detail'>
+
+	<h2 class ="bold"> Order Detail </h2>
+
+	<div class ="order-details-section-1">
+
+	<p> Order Reference : {{entry.order_reference}} </p>
+	<p> Amount : {{entry.amount}} </p>
+	<p> Quantity : {{entry.quantity}} </p>
+	<p> Created On : {{mDate entry.created_on}} </p>
+	<p> Updated On : {{mDate entry.updated_on}} </p>
+
+</div>
+
+	<div class ="order-details-section-2">
+	<p> State : {{entry.shipping_detail.state}} </p>
+	<p> City : {{entry.shipping_detail.city}} </p>
+	<p> Zip : {{entry.shipping_detail.zip}} </p>
+	<p> Country : {{entry.shipping_detail.country}} </p>
+	<p> Phone Number : {{entry.shipping_detail.phone_number}} </p>
+
+</div>
+
+<div class ="clearboth"></div>
+
+	<p id ="order-contact-address-detail"> <span class ="bold">Contact Address : </span> {{entry.shipping_detail.contact_address}} </p>
+
+	{{#whenAlg entry.items.length '>' 0}}
+
+	<table id ="order-items-details" class ="entries">
+
+		<caption> List of Ordered Items </caption>
+
+		<colgroup>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+			<col/>
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>Index</th>
+				<th>Item Id</th>
+				<th class ="">Title</th>
+				<th class ="center">Quantity</th>
+				<th class ="center">Amount</th>
+				<th class ="center">Unit Price</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{{#each entry.items}}
+
+			
+			<tr>
+				<td>{{indexIncr @index}}</td>
+				<td title ="{{_id}}">{{entryValid item_id}}</td>
+				<td class ="">{{entryValid title}}</td>
+				<td class ="center">{{entryValid amount}}</td>
+				<td class ="center">{{entryValid quantity}}</td>
+				<td class ="center">{{entryValid unit_price}}</td>
+			</tr>
+			
+
+			{{/each}}
+		</tbody>
+
+	</table>
+
+{{/whenAlg}}
+
+		{{> no-entries}}
+
+</div>

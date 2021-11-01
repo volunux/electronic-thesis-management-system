@@ -1,0 +1,63 @@
+<div id ='entry-detail'>
+
+	<h2 class ="bold"> {{title}} : Entry Detail </h2>
+
+	<table id ='entry-view'>
+
+		<colgroup>
+			<col class ='parameter'/>
+			<col class ='prop-data'/>
+		</colgroup>
+
+		<tbody>
+
+			<tr>
+
+				<th>Image : </th>
+				<td> {{entry.location}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Author : </th>
+				<td> {{entry.author}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Size : </th>
+				<td> {{entry.size}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Mimetype : </th>
+				<td> {{entry.mimetype}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Updated On : </th>
+				<td> {{mDate updated_on}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Status : </th>
+				{{#if status}}
+				<td>{{entry.status}}</td>
+				{{else}}
+				<td>N/A</td>
+				{{/if}}
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</div>

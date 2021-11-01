@@ -1,0 +1,35 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Update </h2>
+
+	<form method ="POST" enctype ="multipart/form-data">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+	<div class ="form-group file-upload">
+
+	<label for ="thesis_document"> Thesis Document : * </label>
+	<input type ="file" accept ="application/*" id ="thesis_document" name ="thesis_document" value ="{{entry.thesis_document}}" required ="required" class ="form-control"/>
+
+	<input type ="hidden" name ="file_size" value ="{{fileSize}}"/>
+	<input type ="hidden" name ="uploadUrl" value ="{{uploadUrl}}"/>
+	<input type ="hidden" name ="file_type" value ="{{fileType}}"/>
+	<br/>
+	<button class ="btn-upload disabled" disabled ="disabled"> Upload </button>
+	<button class ="btn-delete btn-file-upload-delete none" disabled="disabled"> Delete </button>
+	<button class ="btn-cancel btn-file-upload-cancel none" disabled="disabled"> Cancel </button>
+	<p class ='file-text'> </p>
+
+</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

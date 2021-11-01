@@ -1,0 +1,162 @@
+<div id ='int-thesis-detail'>
+
+	<h2 class ="bold"> {{title}} Entry Detail </h2>
+
+	<table id =''>
+
+		<colgroup>
+			<col class ='parameter'/>
+			<col class ='prop-data'/>
+		</colgroup>
+
+		<tbody>
+
+			<tr>
+
+				<th >Cover Image : </th>
+				<td> <img id ="cover-image" src ="{{entryCoverImage entry.cover_image}}"/> </td>
+
+			</tr>
+
+			{{#if entry.title}}
+			<tr>
+
+				<th >Title : </th>
+				<td> {{entry.title}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.price}}
+
+			<tr>
+
+				<th> International Standard Book Number : </th>
+				<td> {{entry.price}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.content}}
+
+			<tr>
+
+				<th> Content : </th>
+				<td class ="main-body-detail"> {{{entry.content}}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.number_of_page}}
+
+			<tr>
+
+				<th> Number of Page : </th>
+				<td> {{entry.number_of_page}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.grade}}
+
+			<tr>
+
+				<th> Grade : </th>
+				<td> {{entry.grade}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.publisher}}
+
+			<tr>
+
+				<th> Publisher : </th>
+				<td> {{entry.publisher}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.department}}
+
+			<tr>
+
+				<th> Department : </th>
+				<td> {{entry.department}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.faculty}}
+
+			<tr>
+
+				<th> Faculty : </th>
+				<td> {{entry.faculty}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.supervisor}}
+
+			<tr>
+
+				<th> Supervisor : </th>
+				<td> {{entry.supervisor}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.publication_year}}
+
+			<tr>
+
+				<th> Publication Year : </th>
+				<td> {{entry.publication_year}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			<tr>
+
+				<th> Updated On : </th>
+				<td> {{mDate updated_on}} </td>
+
+			</tr>
+
+			{{#if entry.author_name}}
+
+			<tr>
+
+				<th> Author Name : </th>
+				<td> {{entry.author}} </td>
+
+			</tr>
+
+			{{/if}}
+
+			{{#if entry.full_name}}
+
+			<tr>
+
+				<th> Name of Uploader : </th>
+				<td> {{entry.full_name}} </td>
+
+			</tr>
+
+			{{/if}}
+
+		</tbody>
+	</table>
+
+</div>

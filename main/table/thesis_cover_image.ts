@@ -1,0 +1,27 @@
+export const thesisCoverImage : string = 
+
+`
+DROP TABLE IF EXISTS THESIS_COVER_IMAGE;
+CREATE TABLE IF NOT EXISTS THESIS_COVER_IMAGE (
+
+thesis_cover_image_id SERIAL NOT NULL,
+location VARCHAR(200) NOT NULL,
+mimetype VARCHAR(25) DEFAULT 'Not Available',
+size VARCHAR(25) DEFAULT 'Not Available',
+key VARCHAR(200) NOT NULL,
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+thesis_cover_image_no INT UNIQUE NOT NULL,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+thesis_id INT NOT NULL,
+user_id INT NOT NULL,
+status_id INT NOT NULL,
+
+CONSTRAINT THESIS_COVER_IMAGE_PKEY PRIMARY KEY(thesis_cover_image_id)	
+
+)	
+
+
+`;

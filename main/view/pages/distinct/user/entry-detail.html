@@ -1,0 +1,108 @@
+<div id ='entry-detail'>
+
+	<h2 class ="bold"> {{title}} Entry Detail </h2>
+
+	<table id ='entry-view'>
+
+		<colgroup>
+			<col class ='parameter'/>
+			<col class ='prop-data'/>
+		</colgroup>
+
+		<tbody>
+
+			<tr>
+
+				<th>First Name : </th>
+				<td> {{entryValid entry.first_name}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Last Name : </th>
+				<td> {{entryValid entry.last_name}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Email Address : </th>
+				<td> {{entryValid entry.email_address}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Matriculation Number : </th>
+				<td> {{entryValid entry.matriculation_number}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Username : </th>
+				<td> {{entryValid entry.username}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Department : </th>
+				<td> {{entryValid entry.department}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Faculty : </th>
+				<td> {{entryValid entry.faculty}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Level : </th>
+				<td> {{entryValid entry.level}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Country : </th>
+				<td> {{entryValid entry.country}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Role : </th>
+				<td> {{jsonArrayToString entry.role "name"}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Created On : </th>
+				<td> {{mDate entry.created_on}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Updated On : </th>
+				<td> {{mDate entry.updated_on}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Status : </th>
+				<td>{{entryValid entry.status}}</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</div>

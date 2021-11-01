@@ -1,0 +1,49 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Update </h2>
+
+	<form method ="POST">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ="form-group">
+
+			<label for ="name"> Name : * </label>
+
+			<input id ="name" name ="name" value ="{{entry.name}}" class ="form-control"/>
+
+		</div>
+
+		{{#whenAlg statuses.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="status"> Status : * </label>
+
+			<select id ="status" name ="status" required ="required" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each statuses}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.status}} selected ="selected" {{/whenAlg}}> {{word}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

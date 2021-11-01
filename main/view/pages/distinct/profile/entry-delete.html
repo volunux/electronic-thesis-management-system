@@ -1,0 +1,51 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Delete </h1>
+
+	<form method ="POST">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ="form-group">
+
+			<label for ="first_name"> First Name : * </label>
+
+			<input id ="first_name" name ="first_name" value ="{{entry.first_name}}" class ="form-control" readonly ="readonly" required ="required"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="last_name"> Last Name : * </label>
+
+			<input id ="last_name" name ="last_name" value ="{{entry.last_name}}" class ="form-control" readonly ="readonly" required ="required"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="email_address"> Email Address : * </label>
+
+			<input id ="email_address" name ="email_address" value ="{{entry.email_address}}" class ="form-control" readonly ="readonly" required ="required"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="matriculation_number"> Matriculation Number : * </label>
+
+			<input id ="matriculation_number" name ="matriculation_number" value ="{{entry.matriculation_number}}" class ="form-control" readonly ="readonly" required ="required"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

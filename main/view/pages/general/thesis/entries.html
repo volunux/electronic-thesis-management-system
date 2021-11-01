@@ -1,0 +1,55 @@
+<h2 class ="bold"> {{title}} Entries </h2>
+
+	<div class ="entries-options">
+
+	{{> search-option}}
+
+	{{> pagination}}
+
+	</div>
+
+	<div id ="general-thesis-entries">
+
+		{{#each entries}}
+
+			<div class ="general-thesis-item">
+
+				<div class ="general-thesis-item-header">
+				<h3> <a class ="bold" href ="/thesis/detail/{{slug}}"> {{title}} </a> </h3>
+
+				<p> <span class ="bold"> Publication Year : </span> {{publication_year}} </p>
+				<p> <span class ="bold"> Department : </span> {{department}} </p>
+				<p> <span class ="bold"> Author : </span> {{author_name}} </p>
+				<p> <span class ="bold"> Price : </span> {{price}} </p>
+
+				</div>
+
+				<p> 
+
+					<form action ="/cart" method ="post" enctype ="application/x-www-form-urlencoded">
+
+						<input type ="hidden" value ="{{../_csrf}}" name ="_csrf" />
+
+						<input type ="hidden" value ="{{_id}}" name ="item_id">
+
+						<input type ="hidden" value ="{{title}}" name ="title"/>
+
+						<input type ="hidden" value ="1" name ="quantity"/>
+
+						<input type ="hidden" value ="{{price}}" name ="unit_price"/>
+
+							<button type ="submit" class ="add-to-cart-btn" > Add to Cart </button> </p>
+
+						</form>
+
+			</div>
+
+		{{/each}}
+
+		</div>
+
+	<div class ="entries-options">
+
+	{{> pagination}}
+
+	</div>

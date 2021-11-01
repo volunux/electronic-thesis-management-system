@@ -1,0 +1,66 @@
+{{#if entry}}
+
+<div class ='entry-changes'>
+
+	<h2 class ="bold" > {{title}} Entry Delete </h2>
+
+	<form method ='POST'>
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ='form-group'>
+
+			<label for ='title'> Title : * </label>
+
+			<input id ='title' name ='title' value ='{{entry.title}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='number_of_page'> Number of Page : * </label>
+
+			<input id ='number_of_page' name ='number_of_page' value ='{{entry.number_of_page}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='publication_year'> Publication Year : * </label>
+
+			<input id ='publication_year' name ='publication_year' value ='{{entry.publication_year}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='author_name'> Author Name : </label>
+
+			<input id ='author_name' name ='author_name' value ='{{entry.author_name}}' class ='form-control'/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="status"> Status : * </label>
+
+			<input id ="status" name ="status" value ="{{entry.status}}" class ="form-control" readonly ="readonly" required ="required"/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<button type ='submit' class ='btn-submit' > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>
+
+
+{{/if}}
+
+{{> no-entry-update-delete}}

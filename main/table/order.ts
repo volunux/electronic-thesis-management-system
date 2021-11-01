@@ -1,0 +1,31 @@
+export const order : string = 
+
+`
+DROP TABLE IF EXISTS ORDERS;
+CREATE TABLE IF NOT EXISTS ORDERS (
+
+order_id SERIAL NOT NULL ,
+
+amount INT NOT NULL,
+delivery_method_id INT NOT NULL,
+payment_method_id INT NOT NULL,
+order_status_id INT NOT NULL,
+country_id INT NOT NULL,
+user_id INT NOT NULL,
+
+state VARCHAR(30) NOT NULL,
+city VARCHAR(30) NOT NULL,
+contact_address VARCHAR(300) NOT NULL,
+phone_number VARCHAR(15) NOT NULL,
+zip VARCHAR(10) NOT NULL,
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+order_no INT UNIQUE NOT NULL ,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+CONSTRAINT ORDER_PKEY PRIMARY KEY(order_id)
+
+)
+
+`;

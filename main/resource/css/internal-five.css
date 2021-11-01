@@ -1,0 +1,79 @@
+#int-five-entries {
+
+}
+
+#int-five-entries col:nth-of-type(1) {
+
+	width : 10%;
+}
+
+#int-five-entries col:nth-of-type(2) {
+
+	width : 22%;
+}
+
+#int-five-entries col:nth-of-type(3) {
+
+	width : 15%;
+}
+
+#int-five-entries col:nth-of-type(4) {
+
+	width : 20%;
+}
+
+#int-five-entries col:nth-of-type(5) {
+
+	width : 22%;
+}
+
+#int-five-entries col:nth-of-type(6) {
+
+	width : 10%;
+}
+
+
+#int-five-entries td {
+
+	padding : 8px 5px;
+}
+
+#int-five-entries tr > td:nth-child(2) {
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;  
+}
+
+#int-five-detail table {
+
+	width : 1200px;
+	table-layout : fixed;
+}
+
+#int-five-detail col:nth-of-type(1) {
+
+	width : 25%;
+}
+
+#int-five-detail col:nth-of-type(2) {
+
+	width : 75%;
+}
+
+#int-five-detail th , #int-five-detail td {
+
+	font-size : 14px;
+	line-height : 2.5em;
+}
+
+#int-five-detail th {
+
+	font-family : 'NunitoSansBold';
+}
+
+#int-five-detail td , #int-five-detail th {
+
+	padding : 10px;
+	word-wrap: break-word;
+}

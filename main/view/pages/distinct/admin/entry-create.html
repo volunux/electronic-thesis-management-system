@@ -1,0 +1,57 @@
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Add </h1>
+
+	<form action ="./add" method ="POST">
+
+		<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ="form-group">
+
+			<label for ="name"> Name : * </label>
+
+			<input id ="name" name ="name" value ="{{entry.name}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="abbreviation"> Abbreviation : * </label>
+
+			<input id ="abbreviation" name ="abbreviation" value ="{{entry.abbreviation}}" class ="form-control"/>
+
+		</div>
+
+		{{#whenAlg faculties.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="faculty"> Faculty : * </label>
+
+			<select id ="faculty" name ="faculty" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each faculties}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.faculty}} selected ="selected" {{/whenAlg}}> {{name}} </option>
+
+			{{/each}}
+
+			</select>
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

@@ -1,0 +1,25 @@
+		<div class ="validation-errors">
+
+			{{#when errors "noteq" null}}
+
+			{{#when errors.length "gt" 0}}
+
+			<h4 class ="bold"> Errors : </h4>
+
+			<p> Errors were found during form validation </p>
+
+				<ul class ="square-list-style-type">
+
+					{{#each errors}}
+
+						<li>{{this}} </li>
+
+						{{/each}}
+
+		</ul>
+
+		{{/when}}
+
+		{{/when}}
+
+		</div>

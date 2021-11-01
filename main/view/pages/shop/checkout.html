@@ -1,0 +1,207 @@
+
+<div id ="checkout">
+
+	<h2 class ="bold" > Checkout </h2>
+
+	<form action ="./checkout" method ="POST">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	<div class ="" id ="checkout-form">
+
+	<div class ="personal-data">
+
+		<div class ="form-group">
+
+			<label for ="full_name"> Full Name : * </label>
+
+			<input id ="full_name" name ="full_name" value ="{{entry.full_name}}" class ="form-control"/>
+
+			{{#if errorObjectList.full_name}}
+
+			<p class ="bold validation-error"> {{errorObjectList.full_name.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="phone_number"> Phone Number : * </label>
+
+			<input id ="phone_number" name ="phone_number" value ="{{entry.phone_number}}" class ="form-control"/>
+
+			{{#if errorObjectList.phone_number}}
+
+			<p class ="bold validation-error"> {{errorObjectList.phone_number.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		{{#whenAlg countries.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="country"> Country : * </label>
+
+			<select id ="country" name ="country" class ="form-control">
+
+				<option value =""> </option>
+
+			{{#each countries}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.country}} selected ="selected" {{/whenAlg}}> {{name}} </option>
+
+			{{/each}}
+
+			</select>
+
+			{{#if errorObjectList.country}}
+
+			<p class ="bold validation-error"> {{errorObjectList.country.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		{{/whenAlg}}
+
+		<div class ="form-group">
+
+			<label for ="state"> State : * </label>
+
+			<input id ="state" name ="state" value ="{{entry.state}}" class ="form-control"/>
+
+			{{#if errorObjectList.state}}
+
+			<p class ="bold validation-error"> {{errorObjectList.state.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="city"> City : * </label>
+
+			<input id ="city" name ="city" value ="{{entry.city}}" class ="form-control"/>
+
+			{{#if errorObjectList.city}}
+
+			<p class ="bold validation-error"> {{errorObjectList.city.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+	</div>
+
+	<div class ="address-data">
+
+		<div class ="clearboth"></div>
+
+		<div class ="form-group-address">
+
+			<label for ="contact_address"> Address : * </label>
+
+			<textarea id ="contact_address" name ="contact_address" class ="checkout-address-field"> {{entry.contact_address}}</textarea>
+
+			{{#if errorObjectList.contact_address}}
+
+			<p class ="bold validation-error"> {{errorObjectList.contact_address.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="zip"> Zip : * </label>
+
+			<input id ="zip" name ="zip" value ="{{entry.zip}}" class ="form-control"/>
+
+			{{#if errorObjectList.zip}}
+
+			<p class ="bold validation-error"> {{errorObjectList.zip.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		{{#whenAlg paymentMethods.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="payment_method"> Payment Methods : * </label>
+
+			<select id ="payment_method" name ="payment_method" class ="form-control">
+
+			{{#each paymentMethods}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.payment_method}} selected ="selected" {{/whenAlg}} readonly ="readonly"> {{title}} </option>
+
+			{{/each}}
+
+			</select>
+
+			{{#if errorObjectList.payment_method}}
+
+			<p class ="bold validation-error"> {{errorObjectList.payment_method.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		{{/whenAlg}}
+
+		{{#whenAlg deliveryMethods.length ">" 0}}
+
+		<div class ="form-group">
+
+			<label for ="delivery_method"> Delivery Methods : * </label>
+
+			<select id ="delivery_method" name ="delivery_method" class ="form-control">
+
+			{{#each deliveryMethods}}
+
+				<option value ="{{_id}}" {{#whenAlg _id "==" ../entry.delivery_method}} selected ="selected" {{/whenAlg}} readonly ="readonly"> {{title}} </option>
+
+			{{/each}}
+
+			</select>
+
+			{{#if errorObjectList.delivery_method}}
+
+			<p class ="bold validation-error"> {{errorObjectList.delivery_method.message}} </p>
+
+			{{/if}}
+
+		</div>
+
+		{{/whenAlg}}
+
+	</div>
+
+</div>
+
+		<div id ="checkout-summary">
+
+			<h3 class ="bold"> Summary </h3>
+
+			<p class ="bold"> Total Number of Items : {{total_item}} </p>
+
+			<p class ="bold"> Total Quantity of Items : {{total_quantity}} </p>
+
+			<p class ="bold"> Total Price Amount of Items : {{total_amount}} </p>
+
+			<button type ="submit" class ="confirm-order" > Confirm Order </button>
+
+		</div>
+
+
+	</form>
+
+</div>
+
+<div class ="clearboth"></div>

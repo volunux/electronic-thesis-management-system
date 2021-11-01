@@ -1,0 +1,33 @@
+{{#if entry}}
+
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Update </h2>
+
+	<form method ="POST" enctype ="multipart/form-data">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ="form-group">
+
+			<label for ="cover_image"> Cover Image : * </label>
+
+			<input type ="file" accept ="image/*" id ="cover_image" name ="cover_image" value ="{{entry.cover_image}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>
+
+{{/if}}
+
+{{> no-entry-update-delete}}

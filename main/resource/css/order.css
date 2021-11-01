@@ -1,0 +1,130 @@
+#order-entries {
+
+}
+
+#order-entries col:nth-of-type(1) {
+
+	width : 10%;
+}
+
+#order-entries col:nth-of-type(2) {
+
+	width : 10%;
+}
+
+#order-entries col:nth-of-type(3) {
+
+	width : 10%;
+}
+
+#order-entries col:nth-of-type(4) {
+
+	width : 10%;
+}
+
+#order-entries col:nth-of-type(5) {
+
+	width : 11%;
+}
+
+#order-entries col:nth-of-type(6) {
+
+	width : 10%;
+}
+
+#order-entries col:nth-of-type(7) {
+
+	width : 8%;
+}
+
+#order-entries col:nth-of-type(8) {
+
+	width : 16%;
+}
+
+#order-items-details {
+
+	margin-top : 10px;
+}
+
+#order-items-details caption {
+
+	font-family: "RobotoBold";
+	font-size : 14px;
+	padding : 10px;
+}
+
+#order-items-details col:nth-of-type(1) {
+
+	width : 5%;
+}
+
+#order-items-details col:nth-of-type(2) {
+
+	width : 5%;
+}
+
+#order-items-details col:nth-of-type(3) {
+
+	width : 50%;
+}
+
+#order-items-details col:nth-of-type(4) {
+
+	width : 10%;
+}
+
+#order-items-details col:nth-of-type(5) {
+
+	width : 10%;
+}
+
+#order-items-details col:nth-of-type(6) {
+
+	width : 10%;
+}
+
+#order-entries td {
+
+	padding : 8px 5px;
+}
+
+#order-entries tr > td:nth-child(2) {
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;  
+}
+
+#order-detail th , #order-detail td {
+
+	line-height : 2.5em;
+}
+
+#order-detail th {
+
+	font-family : 'NunitoSansBold';
+}
+
+#order-detail td , #order-detail th {
+
+	padding : 10px;
+	word-wrap: break-word;
+}
+
+.order-details-section-1 , .order-details-section-2 {
+
+	float : left;
+	width : 30%;
+	padding : 10px;
+}
+
+.order-details-2 {
+
+	width : 60%;
+}
+
+#order-contact-address-detail {
+
+	padding : 10px;
+}

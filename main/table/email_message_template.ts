@@ -1,0 +1,24 @@
+export const emailMessageType : string = 
+
+`
+DROP TABLE IF EXISTS EMAIL_MESSAGE_TEMPLATE;
+CREATE TABLE IF NOT EXISTS EMAIL_MESSAGE_TEMPLATE (
+
+email_message_template_id SERIAL NOT NULL,
+title VARCHAR(100) NOT NULL,
+message VARCHAR(5000) NOT NULL,
+email_message_type_id INT NOT NULL,
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+email_message_template_no INT UNIQUE NOT NULL ,
+slug VARCHAR(40) UNIQUE NOT NULL,
+user_id INT NOT NULL,
+status_id INT NOT NULL,
+
+CONSTRAINT EMAIL_MESSAGE_TEMPLATE_PKEY PRIMARY KEY(email_message_template_id)	
+
+)	
+
+`;

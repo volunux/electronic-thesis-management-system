@@ -1,0 +1,150 @@
+.entry-changes .btn-submit {
+
+	width : 180px;
+	display : block;
+	border-radius : 6px;
+	padding : 10px 10px;
+	font-size : 13px;
+	text-align : center;
+}
+
+.entry-changes .btn-submit:hover {
+
+	background-color : lightgreen;
+	color : white;
+}
+
+.search-btn {
+
+	width : 60px;
+}
+
+.add-to-cart-btn {
+
+	width : 90px;
+	background-color : #e1e1e1;
+	color : #827f7f;
+	border-radius : 6px;
+	text-align : center;
+	padding : 8px 10px;	
+	float : right;
+}
+
+.add-to-cart-btn {
+
+	display : inline-block;
+	width : 60px;
+	font-size : 11px;
+	text-align : center;
+	padding : 10px;
+	margin-right : 5px;
+	background-color : #f9f9f9;
+	color : blue;
+	border-radius : 6px;
+}
+
+.entries .changes a:hover , .entries .changes button:hover , .search-btn:hover , .prev:hover , .next:hover , .delete-option:hover , .add-to-cart-btn:hover {
+
+	background-color : #f3f3f3;
+	color : black;
+	cursor : pointer;
+}
+
+.checkout-btn {
+
+	width : 170px;
+	background-color : black;
+	color : white;
+	border-radius : 6px;
+	text-align : center;
+	padding : 8px 10px;	
+}
+
+.btn-submit {
+
+	width : 180px;
+	display : inline-block;
+	border-radius : 6px;
+	padding : 10px 10px;
+	font-size : 13px;
+	text-align : center;
+}
+
+.entries .changes a , .entries .changes button {
+
+	display : inline-block;
+	width : 60px;
+	font-size : 11px;
+	text-align : center;
+	padding : 10px;
+	margin-right : 5px;
+	background-color : #f9f9f9;
+	color : blue;
+	border-radius : 6px;
+}
+
+.entries .changes a:hover , .entries .changes button:hover , .search-btn:hover , .prev:hover , .next:hover , .delete-option:hover , .add-to-cart-btn:hover {
+
+	background-color : #f3f3f3;
+	color : black;
+	cursor : pointer;
+}
+
+.btn-submit-delete-all , .btn-submit-other-changes {
+
+	display : block;
+	width : 100%;
+	margin : 15px auto 0px;
+	padding : 0% 2.9340879234504911474798498165083%;
+	background-color : #f9f9f9;
+	border : 2px solid #f3f3f3;
+	color : #827f7f;
+	border-radius : 6px;
+}
+
+.btn-submit-delete-all:hover , .btn-submit-other-changes:hover {
+
+	background-color : #f3f3f3;
+}
+
+.btn-submit-delete-all , .entry-option {
+
+	height : 40px;
+	line-height : 40px;
+}
+
+
+.btn-upload , .btn-delete , .btn-cancel , .btn-choose-file {
+
+	display : inline-block;
+	font-size : 11px;
+	text-align : center;
+	padding : 10px;
+	margin-top : 10px;
+	color : blue;
+	border-radius : 6px;
+	border : 0px solid black;
+	background-color : #eae8e8;
+	width : 80px;
+}
+
+.btn-choose-file {
+
+	width : 80%;
+}
+
+.disabled {
+
+	color : gray;
+	cursor : none;
+}
+
+.block {
+
+	display : block;
+}
+
+.none {
+
+	display : none;
+}

@@ -1,0 +1,157 @@
+
+form button {
+
+	line-height : 2.0em;
+/*	background-color : #3b0956;*/
+	border : 1.5px solid #ac4bd8;
+	color : #929292;
+	border-radius : 12px 6px 12px 6px;
+	text-align : center;
+	font-size : 11px;
+}
+
+/*button.btn-upload  {
+
+	display : block;
+	width : 90%;
+}*/
+
+button.btn-options  {
+
+	margin-right : 10px;
+	width : 120px;
+}
+
+#file-upload-1 button , #file-upload-2 button , #file-upload-3 button , #file-upload-4 button {
+
+	margin : 5px;
+}
+
+#upload {
+
+	cursor : pointer;
+}
+
+#btn-add-file-1 , #btn-add-file-2 , #btn-add-file-3 , #btn-add-file-4 {
+
+	display : none;
+	cursor : pointer;
+}
+
+#btn-del-file-1 , #btn-del-file-2 , #btn-del-file-3 , #btn-del-file-4 {
+
+	display : none;
+	cursor : pointer;
+}
+
+#btn-can-file-1 , #btn-can-file-2 , #btn-can-file-3 , #btn-can-file-4 {
+
+	display : none;
+	cursor : pointer;
+}
+
+#uploadError , #uploadError1 , #uploadText {
+
+	margin : 5px 0px;
+}
+
+#upload-progress {
+
+	margin : 5px 0px;
+	padding-right : 5px;
+	border-radius : 8px;
+	display : none;
+}
+
+#upload-progress .progress-bar {
+
+	background-color : lightgreen;
+	margin-right : 5px;
+}
+
+.uploadMessage {
+
+	display : none;
+}
+
+.btn-info , .btn-add-file-1 , .btn-del-file-1 , .btn-can-file-1 {
+
+	display : block;
+	margin-right : 0.5em;
+}
+
+/*.disabled {
+
+	background-color : #171417;
+	color : white;
+	margin-right : 0.5em;
+	display : block;
+	width : 120px;
+	padding : 0% 2.9340879234504911474798498165083%;
+	color : #929292;
+}*/
+
+
+
+/*.btn-primary {
+
+	background-color : #007bff;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-secondary {
+
+	background-color : #dc8f30;
+}
+
+.btn-info {
+
+	background-color : #888582;
+}
+
+.btn-info , .btn-primary , .btn-secondary , .btn-danger {
+
+	padding : 7px 30px;
+	border : 2px solid inherit;
+	margin-right : 0.5em;
+}
+
+.disabled {
+
+	background-color : grey;
+	color : white;
+	padding : 7px 30px;
+	margin-right : 0.5em;
+}*/
+
+
+.btn-upload {
+
+	display : inline-block;
+	font-size : 11px;
+	text-align : center;
+	padding : 10px;
+	margin-top : 10px;
+/*	background-color : #f9f9f9;*/
+	color : blue;
+	border-radius : 6px;
+	border : 0px solid black;
+	background-color : #eae8e8;
+	width : 80px;
+}
+
+.disabled {
+
+	color : gray;
+	cursor : none;
+}
+
+.block {
+
+	display : block;
+}

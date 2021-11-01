@@ -1,0 +1,15 @@
+	<div class ='pagination'>
+
+	{{#whenAlg prevPageNumber '>' 0}}
+
+	<a class ='changes-option prev' href ='./entries?updated_max={{lastEntry}}&page={{prevPageNumber}}'> Previous </a>
+
+	{{/whenAlg}}
+
+	{{#whenAlg totalCount '>' 10}}
+
+	<a class ='changes-option next' href ='./entries?updated_min={{lastEntry}}&page={{nextPageNumber}}'> Next </a>
+
+	{{/whenAlg}}
+
+	</div>

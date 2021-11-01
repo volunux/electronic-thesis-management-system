@@ -1,0 +1,55 @@
+	<div class ='entry-update'>
+
+	<h2 class ="bold" > {{title}} : Entry Update </h1>
+
+	<form method ='POST'>
+
+	{{> validation-errors}}
+
+		<div class ='form-group'>
+
+			<label for ='name'> Name : * </label>
+
+			<input id ='name' name ='name' value ='{{entry.name}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='abbreviation'> Abbreviation : * </label>
+
+			<input id ='abbreviation' name ='abbreviation' value ='{{entry.abbreviation}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='description'> Description : * </label>
+
+			<input id ='description' name ='description' value ='{{entry.description}}' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='status'> Status : * </label>
+
+			<select id ='status' name ='status' class ='form-control'>
+
+				<option value ='' {{#when entry.status 'eq' ''}} selected ='selected' {{/when}}> </option>
+				<option value ='1' {{#when entry.status 'eq' '1'}} selected ='selected' {{/when}}> Active </option>
+				<option value ='2' {{#when entry.status 'eq' '2'}} selected ='selected' {{/when}}> Hidden </option>
+
+			</select>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<button type ='submit' class ='btn-submit' > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

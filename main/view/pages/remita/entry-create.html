@@ -1,0 +1,88 @@
+
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Add </h2>
+
+<div id ='entry-detail'>
+
+	<table id ='entry-view'>
+
+		<colgroup>
+			<col class ='parameter'/>
+			<col class ='prop-data'/>
+		</colgroup>
+
+		<tbody>
+
+			<tr>
+
+				<th class ="bold">Reference Code : </th>
+				<td class ="bold"> {{entryValid referenceCode}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th>Payer Name : </th>
+				<td> {{entryValid entry.payerName}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Payer Phone : </th>
+				<td> {{entryValid entry.payerPhone}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Payer Email Address : </th>
+				<td> {{entryValid entry.payerEmail}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Amount : </th>
+				<td> {{entryValid entry.amt}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Description : </th>
+				<td>{{entryValid entry.description}}</td>
+
+			</tr>
+
+			<tr>
+
+				<th class ="bold"> Pay Now : </th>
+				<td>
+
+	<form action ="http://remitademo.net/remita/ecomm/finalize.reg" method ="POST">
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+	<input type ="hidden" name ="merchantId" value ="{{entry.merchantId}}"/>
+	<input type ="hidden" name ="hash" value ="{{entry.hash}}"/>
+	<input type ="hidden" name ="rrr" value ="{{entry.referenceCode}}"/>
+	<input type ="hidden" name ="responseUrl" value ="{{entry.responseUrl}}"/>
+
+							<div class ="form-group">
+					
+			<button type ="submit" class ="btn-submit" > Pay Now </button>
+
+		</div>
+
+	</form>
+	
+				</td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</div>
+
+</div>

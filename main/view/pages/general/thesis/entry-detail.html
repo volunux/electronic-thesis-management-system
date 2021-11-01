@@ -1,0 +1,72 @@
+
+	<div id ="general-thesis-detail">
+
+		<h2 class =""> {{entry.title}} </h2>
+
+		<div id ="general-thesis-detail-info">
+
+		<div class ="clear">
+		<p class ="float-left"> <span class ="bold"> Author Name : </span> {{entry.author}} </p>
+		<p class ="float-right" > <span class ="bold"> Number of Page : </span> {{entry.number_of_page}} </p>
+	</div>
+
+		<div class ="clear">
+		<p class ="float-left"> <span class ="bold"> Publisher Name : </span> {{entry.publisher}} </p>
+		<p class ="float-right"> <span class ="bold"> Grade : </span> {{entry.grade}} - {{entry.grade_description}} </p>
+	</div>
+
+		<div class ="clear">
+		<p class ="float-left"> <span class ="bold"> Faculty : </span> {{entry.faculty}} </p>
+		<p class ="float-right"> <span class ="bold"> Publication Year : </span> {{entry.publication_year}} </p>
+	</div>
+
+		<div class ="clear">
+		<p class ="float-left"> <span class ="bold"> Department : </span> {{entry.department}} </p>
+		<p class ="float-right"> <span class ="bold"> Price : </span> {{entry.price}} </p>
+	</div>
+	
+		<div class ="clear">
+		<p class ="float-left"> <span class ="bold"> Supervisor Name : </span> {{entry.supervisor}} </p>
+	</div>
+
+	</div>
+
+				<div class ="photo-photo-detail">
+				<img class ="" src ="{{entryCoverImage cover_image}}" alt ="{{entry.title}}" title ="{{entry.title}}"/>
+				</div>
+
+	
+		<div id ="main-content">
+
+		<p> <span class ="bold"> Content : </span> {{{entry.content}}} </p>
+	</div>
+
+		</div>
+
+		<div id ="related-thesis">
+
+			<h3 class ="bold"> Related Thesis </h3>
+
+			{{#each entry.related}}
+
+			<div class ="related-thesis-item">
+
+			<h4> <a href ="{{slug}}"> <span class ="bold small"> Title : {{title}} </span> </a> </h4>
+
+			<p> <span class ="bold small"> Author Name : </span> {{author}} </p>
+
+			<p> <span class ="bold small"> Number of Page : </span> {{number_of_page}} </p>
+
+			<p> <span class ="bold small"> Publication Year : </span> {{publication_year}} </p>
+
+			<p> <button type ="submit" class ="add-to-cart-btn" > Add to Cart </button> </p>
+
+			<div class ="clearboth"></div>
+
+				</div>
+
+			</div>
+
+			{{/each}}
+
+		</div>

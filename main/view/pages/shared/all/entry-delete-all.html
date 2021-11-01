@@ -1,0 +1,21 @@
+<h2 class ="bold"> {{title}} Entries Delete All </h2>
+
+	{{#whenAlg entries.length '>' 0}}
+
+<p>All {{entryType}} entry if the button is confirmed will result in total deletion or exclusion from the system or database.
+
+  It is advised you review your decision before pressing the confirmation button which will remove or delete all {{entryType}} entry from the system.
+
+</p>
+
+<form action ='./all' method ='POST'>
+
+		<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+<button class ='btn-submit-delete-all center' type ='submit' > Confirm </button>
+
+	</form>
+
+	{{/whenAlg}}
+
+	{{> no-entries}}

@@ -1,0 +1,27 @@
+{{#whenAlg search_criteria.length '>' 0}}
+
+	<div class='search-options'>
+
+	<form method ="GET">
+
+		<select name ="type" class ="changes-options search-select-options">
+		
+		<option value =""> </option>
+
+		{{#each search_criteria}}
+
+			<option value ="{{this.name}}">{{this.title}}</option>
+
+			{{/each}}
+
+		</select>
+
+		<input type ='text' name ='search' class ='changes-options search-input'> 
+
+		<button class ='changes-option search-btn' type ='submit'>Search</button>
+
+		</form>
+
+	</div>
+
+{{/whenAlg}}

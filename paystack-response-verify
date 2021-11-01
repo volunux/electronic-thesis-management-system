@@ -1,0 +1,85 @@
+curl https://api.paystack.co/transaction/verify/gwz5xwa7hu -H "Authorization: Bearer sk_test_44bc82f501fd526a7446438442aaa928d9d867eb" -X GET
+
+  "status": true,
+  "message": "Verification successful",
+  "data": {
+    "id": 1400734050,
+    "domain": "test",
+    "status": "success",
+    "reference": "gwz5xwa7hu",
+    "amount": 600000,
+    "message": null,
+    "gateway_response": "Successful",
+    "paid_at": "2021-10-21T22:50:30.000Z",
+    "created_at": "2021-10-21T22:49:24.000Z",
+    "channel": "card",
+    "currency": "NGN",
+    "ip_address": "105.112.121.149",
+    "metadata": {
+      "phone_number": "+2349022035587"
+    },
+    "log": {
+      "start_time": 1634856606,
+      "time_spent": 26,
+      "attempts": 1,
+      "errors": 0,
+      "success": true,
+      "mobile": false,
+      "input": [],
+      "history": [
+        {
+          "type": "action",
+          "message": "Attempted to pay with card",
+          "time": 23
+        },
+        {
+          "type": "success",
+          "message": "Successfully paid with card",
+          "time": 26
+        }
+      ]
+    },
+    "fees": 19000,
+    "fees_split": null,
+    "authorization": {
+      "authorization_code": "AUTH_kotb7kktlj",
+      "bin": "408408",
+      "last4": "4081",
+      "exp_month": "12",
+      "exp_year": "2030",
+      "channel": "card",
+      "card_type": "visa ",
+      "bank": "TEST BANK",
+      "country_code": "NG",
+      "brand": "visa",
+      "reusable": true,
+      "signature": "SIG_2jCGD5xOBBI8bhN5U44e",
+      "account_name": null,
+      "receiver_bank_account_number": null,
+      "receiver_bank": null
+    },
+    "customer": {
+      "id": 21257997,
+      "first_name": null,
+      "last_name": null,
+      "email": "volunux@gmail.com",
+      "customer_code": "CUS_jsp75est1r1bd4m",
+      "phone": null,
+      "metadata": null,
+      "risk_action": "default",
+      "international_format_phone": null
+    },
+    "plan": null,
+    "split": {},
+    "order_id": null,
+    "paidAt": "2021-10-21T22:50:30.000Z",
+    "createdAt": "2021-10-21T22:49:24.000Z",
+    "requested_amount": 600000,
+    "pos_transaction_data": null,
+    "source": null,
+    "fees_breakdown": null,
+    "transaction_date": "2021-10-21T22:49:24.000Z",
+    "plan_object": {},
+    "subaccount": {}
+  }
+}

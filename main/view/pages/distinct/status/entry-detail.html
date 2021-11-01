@@ -1,0 +1,45 @@
+<div id ='entry-detail'>
+
+	<h2 class ="bold"> {{title}} : Entry Detail </h2>
+
+	<table id ='entry-view'>
+
+		<colgroup>
+			<col class ='parameter'/>
+			<col class ='prop-data'/>
+		</colgroup>
+
+		<tbody>
+
+			<tr>
+
+				<th>Name : </th>
+				<td> {{entry.name}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Word : </th>
+				<td> {{entryValid entry.word}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Description : </th>
+				<td> {{entryValid entry.description}} </td>
+
+			</tr>
+
+			<tr>
+
+				<th> Updated On : </th>
+				<td> {{mDate updated_on}} </td>
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</div>

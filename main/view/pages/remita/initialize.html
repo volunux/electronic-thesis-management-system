@@ -1,0 +1,65 @@
+
+	<div class ="entry-changes">
+
+	<h2 class ="bold" > {{title}} Entry Add </h2>
+
+	<form action ="/remita/initialize" method ="POST">
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+	<input type ="hidden" name ="merchantId" value ="{{entry.merchantId}}"/>
+	<input type ="hidden" name ="serviceTypeId" value ="{{entry.serviceTypeId}}"/>
+	<input type ="hidden" name ="orderId" value ="{{entry.orderId}}"/>
+	<input type ="hidden" name ="apiKey" value ="{{entry.apiKey}}"/>
+
+		<div class ="form-group">
+
+			<label for ="payerName"> Payer Name : * </label>
+
+			<input id ="payerName" name ="payerName" value ="{{entry.payerName}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="payerPhone"> Phone Number : * </label>
+
+			<input id ="payerPhone" name ="payerPhone" value ="{{entry.payerPhone}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="description"> Description : * </label>
+
+			<input id ="description" name ="description" value ="{{entry.description}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="payerEmail"> Email Address : * </label>
+
+			<input id ="payerEmail" name ="payerEmail" value ="{{entry.payerEmail}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<label for ="amt"> Amount : * </label>
+
+			<input id ="amt" type ="amt" name ="amt" value ="{{entry.amt}}" class ="form-control"/>
+
+		</div>
+
+		<div class ="form-group">
+
+			<button type ="submit" class ="btn-submit" > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

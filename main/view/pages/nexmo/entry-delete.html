@@ -1,0 +1,42 @@
+
+	<div class ='entry-update'>
+
+	<h2 class ="bold" > {{title}} : Entry Delete  </h1>
+
+	<form action ='./add' method ='POST'>
+
+	<input type ="hidden" value ="{{_csrf}}" name ="_csrf" />
+
+	{{> validation-errors}}
+
+		<div class ='form-group'>
+
+			<label for ='text'> Text : * </label>
+
+			<input id ='text' name ='text' value ='{{entry.text}}' readonly ='true' class ='form-control'/>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<label for ='status'> Status : * </label>
+
+			<select id ='status' name ='status' readonly ='true' class ='form-control'>
+
+				<option value ='' {{#when entry.status 'eq' ''}} selected ='selected' {{/when}}> </option>
+				<option value ='1' {{#when entry.status 'eq' '1'}} selected ='selected' {{/when}}> Active </option>
+				<option value ='2' {{#when entry.status 'eq' '2'}} selected ='selected' {{/when}}> Hidden </option>
+
+			</select>
+
+		</div>
+
+		<div class ='form-group'>
+
+			<button type ='submit' class ='btn-submit' > Submit </button>
+
+		</div>
+
+	</form>
+
+</div>

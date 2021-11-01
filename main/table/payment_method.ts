@@ -1,0 +1,23 @@
+export const payment_method : string = 
+
+`
+DROP TABLE IF EXISTS PAYMENT_METHOD;
+CREATE TABLE IF NOT EXISTS PAYMENT_METHOD (
+
+payment_method_id SERIAL NOT NULL,
+title VARCHAR(150) NOT NULL,
+description VARCHAR(250) DEFAULT 'Not Available',
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+payment_method_no INT UNIQUE NOT NULL ,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+user_id INT NOT NULL,
+status_id INT NOT NULL,	
+
+CONSTRAINT PAYMENT_METHOD_PKEY PRIMARY KEY(payment_method_id)
+
+)
+
+`;

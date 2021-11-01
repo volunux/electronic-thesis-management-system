@@ -1,0 +1,27 @@
+export const thesisDocument : string = 
+
+`
+DROP TABLE IF EXISTS THESIS_DOCUMENT;
+CREATE TABLE IF NOT EXISTS THESIS_DOCUMENT (
+
+thesis_document_id SERIAL NOT NULL,
+location VARCHAR(200) NOT NULL,
+mimetype VARCHAR(25) DEFAULT 'Not Available',
+size VARCHAR(25) DEFAULT 'Not Available',
+key VARCHAR(200) NOT NULL,
+
+created_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+thesis_document_no INT UNIQUE NOT NULL,
+slug VARCHAR(40) UNIQUE NOT NULL,
+
+thesis_id INT NOT NULL,
+user_id INT NOT NULL,
+status_id INT NOT NULL,
+
+CONSTRAINT THESIS_DOCUMENT_PKEY PRIMARY KEY(thesis_document_id)	
+
+)	
+
+
+`;

@@ -1,0 +1,110 @@
+#int-thesis-entries {
+
+}
+
+#int-thesis-entries col:nth-of-type(1) {
+
+	width : 4%;
+}
+
+#int-thesis-entries col:nth-of-type(2) {
+
+	width : 36%;
+}
+
+#int-thesis-entries col:nth-of-type(3) {
+
+	width : 15%;
+}
+
+#int-thesis-entries col:nth-of-type(4) {
+
+	width : 8%;
+}
+
+#int-thesis-entries col:nth-of-type(5) {
+
+	width : 7%;
+}
+
+#int-thesis-entries col:nth-of-type(6) {
+
+	width : 30%;
+}
+
+#int-thesis-entries td {
+
+	padding : 8px 5px;
+}
+
+#int-thesis-entries tr > td:nth-child(2) {
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;  
+}
+
+#int-thesis-detail table {
+
+	width : 1200px;
+	table-layout : fixed;
+}
+
+#int-thesis-detail col:nth-of-type(1) {
+
+	width : 25%;
+}
+
+#int-thesis-detail col:nth-of-type(2) {
+
+	width : 75%;
+}
+
+#int-thesis-detail #cover-image {
+
+	width : 400px;
+	height : 200px;
+}
+
+#int-thesis-detail th , #int-thesis-detail td {
+
+	font-size : 14px;
+	line-height : 2.5em;
+}
+
+#int-thesis-detail td#main-body-detail p , #int-thesis-detail td#main-body-detail span , #int-thesis-detail td#main-body-detail li {
+
+		font-family : "Lato";
+		font-size : 14px !important;
+}
+
+#int-thesis-detail th {
+
+	font-family : 'NunitoSansBold';
+}
+
+#int-thesis-detail td , #int-thesis-detail th {
+
+	padding : 10px;
+	word-wrap: break-word;
+}
+
+#int-thesis-detail #update-status-form-control {
+
+	border : 2px solid black;
+	padding : 10px;
+	width : 200px;
+	display : block;
+	border-radius : 6px;
+	margin-bottom : 10px;
+}
+
+#int-thesis-detail #update-status-btn {
+
+	text-align : center;
+}
+
+#int-thesis-detail #update-status-btn:hover {
+
+	color : green;
+}
