@@ -1,4 +1,3 @@
-import { QueryResult , QueryResultRow } from 'pg';
 import { QueryTemplate } from '../../query/util/QueryTemplate';
 import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
@@ -106,6 +105,5 @@ export class StatusRepositoryImpl implements StatusRepository {
 
 		return entry;
 	} 
-
 
 }

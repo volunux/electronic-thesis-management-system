@@ -37,9 +37,9 @@ export class PublisherQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 			
-		p = p > 0 ? p * 10 : 0;
+		p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = PublisherQuery.search.status(<string>q.getParameter('search')); }
 
@@ -79,7 +79,7 @@ export class PublisherQuery {
 
 		let text : string = `INSERT INTO PUBLISHER (name , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
 													RETURNING _id , name , slug
 

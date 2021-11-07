@@ -134,8 +134,6 @@ export class UserThesisController {
 
 		let entries : Thesis[] = await this.service.findAll(req.queryConfig);
 
-		console.log(entries);
-
 		let totalCount : number = entries.length;
 
 		if (entries.length == 11) entries.pop();

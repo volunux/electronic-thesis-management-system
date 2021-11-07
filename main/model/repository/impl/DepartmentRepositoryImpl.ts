@@ -1,4 +1,3 @@
-import { QueryResult , QueryResultRow } from 'pg';
 import { QueryTemplate } from '../../query/util/QueryTemplate';
 import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
@@ -116,9 +115,9 @@ export class DepartmentRepositoryImpl implements DepartmentRepository {
 
 		if (result !== null && entry !== null) {
 
-				let listResult : QueryResultRow[] = (<any>result).Status;
+				let listResult : Object[] = (<any>result).Status;
 
-				let listResult2 : QueryResultRow[] = (<any>result).Faculty;
+				let listResult2 : Object[] = (<any>result).Faculty;
 
 				statuses = ServiceHelper.rowsToObjectMapper<Status>(listResult , Status);
 

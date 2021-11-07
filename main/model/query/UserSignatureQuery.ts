@@ -39,9 +39,9 @@ export class UserSignatureQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = UserSignatureQuery.search.status(<string>q.getParameter('search')); }
 
@@ -140,7 +140,7 @@ export class UserSignatureQuery {
 
 			LEFT JOIN STATUS AS gs ON gs._id = usig.status_id
 
-			INNER JOIN USERS AS usr ON usr.user_id = usig.user_id
+			INNER JOIN USERS AS usr ON usr._id = usig.user_id
 
 			WHERE usig.slug = $1
 

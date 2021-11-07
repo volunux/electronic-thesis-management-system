@@ -38,7 +38,7 @@ export class UserHelper {
   }
 
 	public static validPassword(password : any , user : UserSession) : boolean {
-	
+
 	 	let hash : string = crypto
 							
 							.pbkdf2Sync(password , user.getSalt() , 1000 , 64 , 'sha512')

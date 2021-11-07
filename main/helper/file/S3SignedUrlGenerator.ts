@@ -45,7 +45,7 @@ export class S3SignedUrlGenerator {
 
 												'success_action_status' : '201' ,
 
-												'Expires' : '30000' } ,
+												'Expires' : '300000' } ,
 
 					'Conditions' : [
 													
@@ -59,7 +59,7 @@ export class S3SignedUrlGenerator {
 
 						["content-length-range" , '0' , '1048576'] ] ,
 
-					'Expires' : 30000 				
+					'Expires' : 300000		
 				};
 
 				s3.createPresignedPost(params , (err : Error , data : aws.S3.PresignedPost) => {

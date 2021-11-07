@@ -2,6 +2,7 @@ import { Express , Request , Response , NextFunction } from 'express';
 import { FormValidation } from '../helper/middleware/FormValidation';
 import { QueryConfigImpl } from '../helper/middleware/QueryConfigImpl';
 import { UserProfile } from '../helper/middleware/UserProfile';
+import { UserPermission } from '../helper/middleware/UserPermission';
 
 import { HomeRouter } from './HomeRouter';
 import { InternalRouter } from './InternalRouter';
@@ -39,14 +40,15 @@ export function AppRouter(app : Express) {
 
 		app.use('*' , QueryConfigImpl.createQueryConfigImpl);
 		app.use('*' , FormValidation.createDataValidationObject);
-		app.use('*' , UserProfile.testProfile);
+		app.use('*' , UserProfile.isUserLoggedIn);
 		app.use('/', GeneralThesisRouter);
 		app.use('/', HomeRouter);
-		// app.use('*' , UserProfile.isAuthenticated);
+		app.use('*' , UserProfile.isAuthenticated);
 		app.use('/profile/' , ProfileRouter);
 		app.use('/remita/' , RemitaRouter);
 		app.use('/thesis/user/' , UserThesisRouter);
-		app.use('/internal/' , UserProfile.isAuthenticated , InternalRouter);
+		app.use('/internal/', UserPermission.isUserPermitted(['Super Administrator' , 'Administrator']));
+		app.use('/internal/' , InternalRouter);
 		app.use('/internal/admin', AdminRouter);
 
 		app.use('/internal/department', DepartmentRouter);

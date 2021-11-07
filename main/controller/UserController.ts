@@ -16,6 +16,7 @@ import { UserServiceImpl } from '../model/service/impl/UserServiceImpl';
 import { UserService } from '../model/service/UserService';
 import { User } from '../entity/User';
 import { MailMessage } from '../util/mail/MailMessage';
+import { MailMessageImpl } from '../util/mail/MailMessageImpl';
 import { MailMessageLocal } from '../util/mail/MailMessageLocal';
 import { MailSender } from '../util/mail/MailSender';
 import { MailSenderServicesContainer } from '../util/mail/MailSenderServicesContainer';
@@ -159,13 +160,19 @@ export class UserController implements GenericControllerInterface {
 
 				return; }
 
-		user = await this.service.save(<User>user);
+		let newUser = await this.service.save(<User>user);
 
-		if (user !== null) {
+		if (newUser !== null) {
 
-			let mailMessage : MailMessage = MailMessageLocal.createUser(user.getUsername() , user.getEmailAddress() , user.getPassword());
+			let datas : { [key : string] : any } = {
 
-			MailHelper.sendEmail(this.mailSender , user , mailMessage);
+				'email_address' : user.getEmailAddress() ,
+
+				'password' : user.getPassword() };
+
+				let mailMessage : MailMessage = new MailMessageImpl('Account Created Successfully' , "");
+
+			MailHelper.renderTemplateAndSend(res , 'templates/welcome' , this.mailSender , mailMessage , <any>user , datas);
 
 			req.flash('success' , 'Entity successfully added.');
 

@@ -23,7 +23,7 @@ export class AbstractEntityTwoSearch extends AbstractEntitySearch {
 
 	public word(parameter : string) : SearchQueryOptions {
 
-			let word : string = parameter.toUpperCase().split(' ').join('');
+			let word : string = parameter.split(' ').map((token) => { return token[0].toUpperCase() + token.slice(1).toLowerCase(); }).join(' ');
 
 			this.searchQueryOptions.getSearchQueryConditionOptions().add("one" , "WHERE " + this.wordAlias + " LIKE '%" + word + "%'");
 

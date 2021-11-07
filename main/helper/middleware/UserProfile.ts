@@ -39,6 +39,15 @@ export class UserProfile {
 
 	}
 
+	public static isUserLoggedIn(req : Request , res : Response , next : NextFunction) : void {
+
+		if (req.user !== null && req.user !== undefined) { res.locals.isUserLoggedIn = true; }
+
+		else { res.locals.isUserLoggedIn = false; }
+
+		return next();
+	}
+
 	public static logOut(req : Request , res : Response , next : NextFunction) : void {
 
 		if (req.isAuthenticated()) { return next(); }

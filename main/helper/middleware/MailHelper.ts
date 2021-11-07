@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import { MailMessage } from '../../util/mail/MailMessage';
 import { MailMessageLocal } from '../../util/mail/MailMessageLocal';
 import { MailMessagePayload } from '../../util/mail/MailMessagePayload';
@@ -15,4 +16,19 @@ export class MailHelper {
 		if (service !== null) { service.send(mailMessagePayload.getSender() , mailMessagePayload.getRecipient() , mailMessagePayload.getSubject() , mailMessagePayload.getBody()); }
 
 	}
+
+	public static renderTemplateAndSend(res : Response , fileName : string , service : MailSender | null , mailMessage : MailMessage , user : User , data : { [key : string] : any }) : void {
+
+		data['layout'] = "";
+
+		res.render(fileName , data , 
+
+				function(err : Error , html : string) : void {
+
+					if (err) { console.log(err); }
+
+					mailMessage.setBody(html);
+
+					MailHelper.sendEmail(service , <any>user , mailMessage); });
+		}
 }

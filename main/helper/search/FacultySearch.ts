@@ -7,7 +7,7 @@ export class FacultySearch extends AbstractEntityOneSearch {
 		super();
 
 		this.statusAlias = 'gs.name';
-		this.updatedOnAlias = 'ft.updated_on';
+		this.updatedOnAlias = 'ft.created_on';
 		this.abbreviationAlias = 'ft.abbreviation';
 		this.nameAlias = 'ft.name';
 

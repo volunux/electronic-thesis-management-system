@@ -13,13 +13,13 @@ export class EmailMessageTemplateQuery {
 
 		let text : string = `
 
-		SELECT emt.email_message_template_id AS _id , emt.title , emt.message , emt.updated_on , emt.slug , emtyp.title AS message_type , gs.word AS status
+		SELECT emt._id , emt.title , emt.message , emt.updated_on , emt.slug , emtyp.title AS message_type , gs.word AS status
 
 		FROM EMAIL_MESSAGE_TEMPLATE AS emt
 
 		LEFT JOIN STATUS AS gs ON gs._id = emt.status_id
 
-		LEFT JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp.email_message_type_id = emt.email_message_type_id
+		LEFT JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp._id = emt.email_message_type_id
 
 		WHERE emt.slug = $1
 
@@ -39,9 +39,9 @@ export class EmailMessageTemplateQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = EmailMessageTemplateQuery.search.status(<string>q.getParameter('search')); }
 
@@ -60,13 +60,13 @@ export class EmailMessageTemplateQuery {
 
 		let text : string = `
 
-			SELECT emt.title , emt.message , emt.updated_on , emt.email_message_template_no AS num , emt.slug , emtyp.title AS message_type , gs.word AS status
+			SELECT emt.title , emt.message , emt.updated_on , emt._id AS num , emt.slug , emtyp.title AS message_type , gs.word AS status
 
 			FROM EMAIL_MESSAGE_TEMPLATE AS emt
 
 			INNER JOIN STATUS AS gs ON gs._id = emt.status_id
 
-			INNER JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp.email_message_type_id = emt.email_message_type_id
+			INNER JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp._id = emt.email_message_type_id
 
 			${joinResult} ${conditionResult}
 
@@ -81,19 +81,17 @@ export class EmailMessageTemplateQuery {
 
 	public static save(entry : EmailMessageTemplate) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO EMAIL_MESSAGE_TEMPLATE (title , message , email_message_type_id , email_message_template_no , slug , user_id , status_id)
+		let text : string = `INSERT INTO EMAIL_MESSAGE_TEMPLATE (title , message , email_message_type_id , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
-													RETURNING email_message_template_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
-		let values : any[] = [entry.getTitle() , entry.getMessage() , entry.getMessageType() , c , s , entry.getUserId()];
+		let values : any[] = [entry.getTitle() , entry.getMessage() , entry.getMessageType() , s , entry.getUserId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -107,13 +105,13 @@ export class EmailMessageTemplateQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 										FROM STATUS) AS gs ) ,
 
 			'EmailMessageType' , (SELECT json_agg(row_to_json(emtyp)) 
 
-									FROM (SELECT email_message_type_id AS _id , title
+									FROM (SELECT _id , title
 
 										FROM EMAIL_MESSAGE_TYPE) AS emtyp )
 
@@ -134,7 +132,7 @@ export class EmailMessageTemplateQuery {
 
 													WHERE slug = $6
 
-													RETURNING email_message_template_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
@@ -154,7 +152,7 @@ export class EmailMessageTemplateQuery {
 
 		LEFT JOIN STATUS AS gs ON gs._id = emt.status_id
 
-		LEFT JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp.email_message_type_id = emt.email_message_type_id
+		LEFT JOIN EMAIL_MESSAGE_TYPE AS emtyp ON emtyp._id = emt.email_message_type_id
 
 		WHERE emt.slug = $1
 
@@ -176,7 +174,7 @@ export class EmailMessageTemplateQuery {
 
 		WHERE slug = $1 
 
-		RETURNING email_message_template_id AS _id , title
+		RETURNING _id , title
 
 		`;
 
@@ -192,9 +190,9 @@ export class EmailMessageTemplateQuery {
 
 		DELETE FROM EMAIL_MESSAGE_TEMPLATE
 
-		WHERE email_message_template_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING email_message_template_id AS _id , title
+		RETURNING _id , title
 
 		`;
 
@@ -224,7 +222,7 @@ export class EmailMessageTemplateQuery {
 
 		DELETE FROM EMAIL_MESSAGE_TEMPLATE
 
-		RETURNING email_message_template_id AS _id , title
+		RETURNING _id , title
 
 		`;
 
@@ -256,7 +254,7 @@ export class EmailMessageTemplateQuery {
 
 		let text : string = `
 
-		SELECT emt.title , emt.message , emt.email_message_type_id , emt.slug , emt.status_id AS status
+		SELECT emt.title , emt.message , emt._id , emt.slug , emt.status_id AS status
 
 		FROM EMAIL_MESSAGE_TEMPLATE AS emt
 

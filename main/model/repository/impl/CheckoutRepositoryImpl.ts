@@ -107,9 +107,9 @@ export class CheckoutRepositoryImpl implements CheckoutRepository {
 
 				let listResult : Object[] = (<any>entry).result.Country;
 
-				let listResult2 : QueryResultRow[] = (<any>entry).result.PaymentMethod;
+				let listResult2 : Object[] = (<any>entry).result.PaymentMethod;
 
-				let listResult3 : QueryResultRow[] = (<any>entry).result.DeliveryMethod;
+				let listResult3 : Object[] = (<any>entry).result.DeliveryMethod;
 
 				countries = ServiceHelper.rowsToObjectMapper<Country>(listResult , Country);
 
@@ -121,10 +121,7 @@ export class CheckoutRepositoryImpl implements CheckoutRepository {
 
 				checkout.setPaymentMethods(paymentMethods);
 
-				checkout.setDeliveryMethodes(deliveryMethods);
-
-			}
-
+				checkout.setDeliveryMethodes(deliveryMethods); }
 		}
 
 		return checkout;

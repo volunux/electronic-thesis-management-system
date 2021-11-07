@@ -483,7 +483,7 @@ export class ThesisController implements GenericControllerInterface {
 					title = thesis.getTitle();
 				}
 
-				res.render('pages/distinct/thesis/entry-update-cover-image' , {'title' : title , 'errors' : errors });
+				res.render('pages/distinct/thesis/entry-update-document' , {'title' : title , 'errors' : errors , 'entry' : thesis });
 
 			return; }
 
@@ -503,7 +503,7 @@ export class ThesisController implements GenericControllerInterface {
 
 			if (thesisDocument !== null) {
 
-			req.flash('success' , 'Entity successfully added.');
+			req.flash('success' , 'Entity successfully updated.');
 
 			res.redirect('/internal/thesis/entries'); }
 

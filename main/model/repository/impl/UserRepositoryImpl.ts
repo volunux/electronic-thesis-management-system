@@ -1,4 +1,6 @@
-import { QueryResult , QueryResultRow , PoolClient } from 'pg';
+import { QueryResult , PoolClient } from 'pg';
+import { QueryTemplate } from '../../query/util/QueryTemplate';
+import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { Query } from '../../query/util/Query';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
 import { UserQuery } from '../../query/UserQuery';
@@ -16,85 +18,34 @@ import { User } from '../../../entity/User';
 
 export class UserRepositoryImpl implements UserRepository {
 
+	private queryTemplate : QueryTemplate<User> = new SimpleQueryTemplate<User>();
+
 	public async findOne(slug : string) : Promise<User | null> {
 
 		let plan : DynamicQuery = UserQuery.findOne(slug);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.findOne(plan.getText() , plan.getValues() , User);
 } 
 
 	public async existsOne(slug : string) : Promise<boolean> {
 
 		let plan : DynamicQuery = UserQuery.existsOne(slug);
 
-		let user : User | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async findAll(eqp : EntityQueryConfig) : Promise<User[]> {
 
 		let plan : DynamicQuery = UserQuery.findAll(eqp);
 
-		let users : User[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				users = ServiceHelper.rowsToObjectMapper<User>(listResult , User);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return users;
+		return await this.queryTemplate.findAll(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async addOne() : Promise<User> {
 
 		let user : User = new User({});
 
-		try {
-
-			await this.relatedEntities(user);
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(user);
 
 		return user;
 	} 
@@ -103,22 +54,9 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let plan : DynamicQuery = UserQuery.save(<User>entry);
 
-		let user : User | null = null;
+		let user : User | null = await this.queryTemplate.save(plan.getText() , plan.getValues() , User);
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				user.setPassword(entry.getPassword());
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		(<User>user).setPassword(entry.getPassword());
 
 		return user;
 	}
@@ -127,22 +65,9 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let plan : DynamicQuery = UserQuery.updateOne(slug);
 
-		let user : User | null = null;
+		let user : User | null = await this.queryTemplate.updateOne(plan.getText() , plan.getValues() , User);
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				await this.relatedEntities(user);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(<User>user);
 
 		return user;
 	} 
@@ -161,21 +86,19 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let userStatuses : UserStatus[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.relatedEntities(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+			if (result !== null && entry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
+				let listResult : Object[] = (<any>result).Faculty;
 
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Faculty;
+				let listResult2 : Object[] = (<any>result).Department;
 
-				let listResult2 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Department;
+				let listResult3 : Object[] = (<any>result).Level;
 
-				let listResult3 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Level;
+				let listResult4 : Object[] = (<any>result).Country;
 
-				let listResult4 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Country;
-
-				let listResult5 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.UserStatus;
+				let listResult5 : Object[] = (<any>result).UserStatus;
 
 				faculties = ServiceHelper.rowsToObjectMapper<Faculty>(listResult , Faculty);
 
@@ -195,10 +118,7 @@ export class UserRepositoryImpl implements UserRepository {
 
 				entry.setCountries(countries);
 
-				entry.setUserStatuses(userStatuses);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+				entry.setUserStatuses(userStatuses); }
 
 		return entry;
 	} 
@@ -207,22 +127,7 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let plan : DynamicQuery = UserQuery.update(slug , <User>entry);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.update(plan.getText() , plan.getValues() , User);
 	}
 
 	public async updateOneRole(slug : string) : Promise<User | null> {
@@ -235,23 +140,15 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let roles : Role[] = [];
 
-		try {
+		let entry : Object | null = await this.queryTemplate.executePlain(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (entry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length < 1) { return user; }
+			user = new User(entry);
 
-			let singleResult : QueryResultRow = result.rows[0];
+			user.setRole(UserHelper.jsonArrayFlattenerInt((<any>entry).role , '_id'));
 
-			user = new User(singleResult);
-
-			console.log(singleResult);
-
-			user.setRole(UserHelper.jsonArrayFlattenerInt(singleResult.role , '_id'));
-
-			await this.roleRelatedEntries(user);
-
-		} catch(err : any) { console.log('An error has occured'); }
+			await this.roleRelatedEntries(user); }
 
 		return user;
 	} 
@@ -262,83 +159,38 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let roles : Role[] = [];
 
-		try {
+		let newEntry : Object | null = await this.queryTemplate.executePlain(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (newEntry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
+			let listResult : Object[] = (<any>newEntry).result.Role;
 
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Role;
+			roles = ServiceHelper.rowsToObjectMapper<Role>(listResult , Role);
 
-				roles = ServiceHelper.rowsToObjectMapper<Role>(listResult , Role);
-
-				entry.setRoles(roles); }
-
-		} catch(err : any) { console.log('An error has occured'); }
+			entry.setRoles(roles); }
 
 		return entry;
 	}
 
 	public async updateRole(slug : string , user : User) : Promise<boolean> {
 
-	let plan : DynamicQuery = UserQuery.updateRole(user.getUserRoleId() , user.getRole()[0]);
+		let plan : DynamicQuery = UserQuery.updateRole(user.getUserRoleId() , user.getRole()[0]);
 
-	let entryUpdated : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				entryUpdated = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return entryUpdated;
+		return await this.queryTemplate.updateAndReturnBool(plan.getText() , plan.getValues());
 	} 
 
 	public async deleteOne(slug : string) : Promise<User | null> {
 
 		let plan : DynamicQuery = UserQuery.deleteOne(slug);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.deleteOne(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async deleteRole(slug : string , user : User) : Promise<boolean> {
 
-	let plan : DynamicQuery = UserQuery.deleteRole(slug , user);
+		let plan : DynamicQuery = UserQuery.deleteRole(slug , user);
 
-	let entryDeleted : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				entryDeleted = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return entryDeleted;
+		return await this.queryTemplate.execute(plan.getText() , plan.getValues());
 	} 
 
 	public async updateAndDeleteRole(slug : string , user : User) : Promise<boolean> {
@@ -359,9 +211,9 @@ export class UserRepositoryImpl implements UserRepository {
 
 					let plan : DynamicQuery = UserQuery.updateRole(user.getUserRoleId() , user.getRole()[i]);
 
-					let result : QueryResult = await client.query(plan.getText() , plan.getValues());
+					let result : QueryResult = await client.query(plan.getText() , plan.getValues()); } 
 
-				} }
+			}
 
 			let result2 : QueryResult = await client.query(plan2.getText() , plan2.getValues());
 
@@ -389,128 +241,42 @@ export class UserRepositoryImpl implements UserRepository {
 
 		let plan : DynamicQuery = UserQuery.remove(slug);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.delete(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async deleteMany(entries : string) : Promise<User[]> {
 
 		let plan : DynamicQuery = UserQuery.deleteMany(entries);
 
-		let users : User[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				users = ServiceHelper.rowsToObjectMapper<User>(listResult , User);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return users;
+		return await this.queryTemplate.deleteMany(plan.getText() , plan.getValues() , User);
 	}
 
 	public async deleteAll() : Promise<User[]> {
 
 		let plan : DynamicQuery = UserQuery.deleteAll();
 
-		let users : User[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				users = ServiceHelper.rowsToObjectMapper<User>(listResult , User);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return users;
+		return await this.queryTemplate.deleteAll(plan.getText() , plan.getValues() , User);
 	}
 
 	public async findAndDeleteAll() : Promise<User[]> {
 
 		let plan : DynamicQuery = UserQuery.findAndDeleteAll();
 
-		let users : User[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				users = ServiceHelper.rowsToObjectMapper<User>(listResult , User);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return users;
+		return await this.queryTemplate.findAndDeleteAll(plan.getText() , plan.getValues() , User);
 	}
 
 	public async checkUsername(username : string) : Promise<boolean> {
 
 	let plan : DynamicQuery = UserQuery.verifyUsername(username);
 
-	let entryExists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				entryExists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return entryExists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	}
 
 	public async checkEmailAddress(emailAddress : string) : Promise<boolean> {
 
 	let plan : DynamicQuery = UserQuery.verifyEmail(emailAddress);
 
-	let entryExists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				entryExists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return entryExists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());	
 	}
 
 }

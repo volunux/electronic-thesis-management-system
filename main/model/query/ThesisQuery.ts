@@ -53,9 +53,9 @@ export class ThesisQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = ThesisQuery.search.status(<string>q.getParameter('search')); }
 
@@ -97,9 +97,9 @@ export class ThesisQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = ThesisQuery.search.status(<string>q.getParameter('search')); }
 
@@ -122,11 +122,11 @@ export class ThesisQuery {
 
 		let text : string = `
 
-			SELECT th.title , th.publication_year , th.updated_on , th.author_name AS author_name , th.thesis_no AS num , th.slug , ths.word AS status
+			SELECT th.title , th.publication_year , th.updated_on , th.author_name , th._id AS num , th.slug , ths.word AS status
 
 			FROM THESIS AS th
 
-			INNER JOIN THESIS_STATUS AS ths ON ths.thesis_status_id = th.status_id
+			INNER JOIN THESIS_STATUS AS ths ON ths._id = th.status_id
 
 			${joinResult}
 
@@ -143,47 +143,43 @@ export class ThesisQuery {
 
 	public static save(entry : Thesis) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
 		let text : string = `INSERT INTO THESIS (title , price , content , number_of_page , grade_id , supervisor , 
 
-																						publisher_id , publication_year , faculty_id , department_id , thesis_no , slug , user_id , author_name , author_id , status_id)
+																						publisher_id , publication_year , faculty_id , department_id , slug , user_id , author_name , author_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , $9 , $10 , $11 , $12 , $13 , $14 , $15 , $16)
+													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , $9 , $10 , $11 , $12 , $13 , $14 , $15)
 
-													RETURNING thesis_id AS _id , title , price , number_of_page , supervisor , slug
+													RETURNING _id , title , price , number_of_page , supervisor , slug
 
 													`;
 
 		let values : any[] = [entry.getTitle() , entry.getPrice() , entry.getContent() , entry.getNumberOfPage() , entry.getGrade() , entry.getSupervisor() , entry.getPublisher() , 
 
-													entry.getPublicationYear() , entry.getFaculty() , entry.getDepartment() , c , s , entry.getUserId() , entry.getAuthorName() , entry.getAuthorId() , entry.getStatus()];
+													entry.getPublicationYear() , entry.getFaculty() , entry.getDepartment() , s , entry.getUserId() , entry.getAuthorName() , entry.getAuthorId() , entry.getStatus()];
 
 		return DynamicQuery.create(text , values);
 
 	}
 
-	public static saveThesisCoverImage(coverImage : ThesisCoverImage) : DynamicQuery {
-
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
+	public static saveThesisCoverImage(entry : ThesisCoverImage) : DynamicQuery {
 
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO THESIS_COVER_IMAGE (location , key , mimetype , size , thesis_cover_image_no , slug , user_id , thesis_id , status_id)
+		let text : string = `INSERT INTO THESIS_COVER_IMAGE (location , key , mimetype , size , slug , user_id , thesis_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7)
 
 													ON CONFLICT (thesis_id)
 
-													DO UPDATE SET location = $1 , key = $2 , mimetype = $3 , size = $4 , user_id = $7 
+													DO UPDATE SET location = $1 , key = $2 , mimetype = $3 , size = $4 , user_id = $7 , updated_on = $8
 
-													RETURNING thesis_cover_image_id AS _id , slug , location , key
+													RETURNING _id , slug , location , key
 
 												`;
 
-		let values : any[] = [coverImage.getLocation() , coverImage.getKey() , coverImage.getMimetype() , coverImage.getSize() , c , s , coverImage.getUserId() , coverImage.getThesisId()];
+		let values : any[] = [entry.getLocation() , entry.getKey() , entry.getMimetype() , entry.getSize() , s , entry.getUserId() , entry.getThesisId() , 'NOW()'];
 
 		return DynamicQuery.create(text , values);
 
@@ -195,19 +191,19 @@ export class ThesisQuery {
 
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO THESIS_DOCUMENT (location , key , mimetype , size , thesis_cover_image_no , slug , user_id , thesis_id , status_id)
+		let text : string = `INSERT INTO THESIS_DOCUMENT (location , key , mimetype , size , slug , user_id , thesis_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , $7)
 
 													ON CONFLICT (thesis_id)
 
-													DO UPDATE SET location = $1 , key = $2 , mimetype = $3 , size = $4 , user_id = $7 
+													DO UPDATE SET location = $1 , key = $2 , mimetype = $3 , size = $4 , user_id = $7 , updated_on = $8
 
-													RETURNING thesis_document_id AS _id , slug , location , key
+													RETURNING _id , slug , location , key
 
 												`;
 
-		let values : any[] = [document.getLocation() , document.getKey() , document.getMimetype() , document.getSize() , c , s , document.getUserId() , document.getThesisId()];
+		let values : any[] = [document.getLocation() , document.getKey() , document.getMimetype() , document.getSize() , s , document.getUserId() , document.getThesisId() , 'NOW()'];
 
 		return DynamicQuery.create(text , values);
 
@@ -267,7 +263,7 @@ export class ThesisQuery {
 
 													WHERE slug = $14
 
-													RETURNING thesis_id AS _id , title , publication_year , slug
+													RETURNING _id , title , publication_year , slug
 
 												`;
 
@@ -318,7 +314,7 @@ export class ThesisQuery {
 
 		FROM THESIS AS th
 
-		LEFT JOIN THESIS_STATUS AS ths ON ths.thesis_status_id = th.status_id
+		LEFT JOIN THESIS_STATUS AS ths ON ths._id = th.status_id
 
 		WHERE th.slug = $1
 
@@ -340,7 +336,7 @@ export class ThesisQuery {
 
 		WHERE slug = $1 
 
-		RETURNING thesis_id AS _id , title , publication_year , slug
+		RETURNING _id , title , publication_year , slug
 
 		`;
 
@@ -356,9 +352,9 @@ export class ThesisQuery {
 
 		DELETE FROM THESIS
 
-		WHERE thesis_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING thesis_id AS _id , title , publication_year , slug
+		RETURNING _id , title , publication_year , slug
 
 		`;
 
@@ -388,7 +384,7 @@ export class ThesisQuery {
 
 		DELETE FROM THESIS
 
-		RETURNING thesis_id AS _id , title , publication_year , slug
+		RETURNING _id , title , publication_year , slug
 
 		`;
 

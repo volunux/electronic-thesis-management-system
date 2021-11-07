@@ -63,9 +63,9 @@ export class UserQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = UserQuery.search.status(<string>q.getParameter('search')); }
 
@@ -84,7 +84,7 @@ export class UserQuery {
 
 		let text : string = `
 
-			SELECT usr._id , usr.slug , usr.first_name || ' ' || usr.last_name AS full_name , usr._id AS num , usr.email_address , usr.updated_on ,
+			SELECT usr._id , usr.slug , usr.first_name , usr.last_name , usr._id AS num , usr.email_address , usr.updated_on ,
 
 			dt.name AS department , ft.name AS faculty , ll.name AS level , us.word AS status
 

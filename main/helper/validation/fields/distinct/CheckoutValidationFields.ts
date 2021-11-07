@@ -59,7 +59,7 @@ export class CheckoutValidationFields {
 
 		return joi.string()
 
-							.min(1)
+							.min(10)
 
 							.max(60)
 

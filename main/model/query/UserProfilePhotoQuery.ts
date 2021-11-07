@@ -39,9 +39,9 @@ export class UserProfilePhotoQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = UserProfilePhotoQuery.search.status(<string>q.getParameter('search')); }
 

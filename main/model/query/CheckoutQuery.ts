@@ -14,7 +14,7 @@ export class CheckoutQuery {
 
 													FROM THESIS
 
-													WHERE thesis_id = $1
+													WHERE _id = $1
 
 													LIMIT 1`;
 
@@ -29,7 +29,7 @@ export class CheckoutQuery {
 
 													FROM THESIS
 
-													WHERE thesis_id = $1 AND price = $2
+													WHERE _id = $1 AND price = $2
 
 													LIMIT 1`;
 
@@ -44,7 +44,7 @@ export class CheckoutQuery {
 
 													FROM USERS
 
-													WHERE user_id = $1
+													WHERE _id = $1
 
 													LIMIT 1`;
 
@@ -122,13 +122,13 @@ export class CheckoutQuery {
 
 			'Country' , (SELECT json_agg(row_to_json(ct))
 
-									FROM (SELECT country_id AS _id , name
+									FROM (SELECT _id , name
 
 										FROM COUNTRY) AS ct ) ,
 
 			'PaymentMethod' , (SELECT json_agg(row_to_json(pm))
 
-											FROM (SELECT payment_method_id AS _id , title
+											FROM (SELECT _id , title
 
 												FROM PAYMENT_METHOD
 
@@ -136,7 +136,7 @@ export class CheckoutQuery {
 
 			'DeliveryMethod' , (SELECT json_agg(row_to_json(dm)) 
 
-											FROM (SELECT delivery_method_id AS _id , title
+											FROM (SELECT _id , title
 
 												FROM DELIVERY_METHOD 
 
@@ -196,19 +196,17 @@ export class CheckoutQuery {
 
 	public static saveAddress(entry : Order) : DynamicQuery {
 
-		let c = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO USER_ADDRESS(contact_address , state , city , zip , phone_number , user_id , user_address_no , slug , status_id)
+		let text : string = `INSERT INTO USER_ADDRESS(contact_address , state , city , zip , phone_number , user_id , slug , status_id)
 
-													VALUES($1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES($1 , $2 , $3 , $4 , $5 , $6 , $7 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
 												`;
 
 		let values : any[] = [entry.getShippingDetail()!.getContactAddress() , entry.getShippingDetail()!.getState() , entry.getShippingDetail()!.getCity() , entry.getShippingDetail()!.getZip() ,
 
-													entry.getShippingDetail()!.getPhoneNumber() , entry.getUserId() , c , s];
+													entry.getShippingDetail()!.getPhoneNumber() , entry.getUserId() , s];
 
 		return DynamicQuery.create(text , values);
 

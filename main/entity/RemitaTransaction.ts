@@ -16,9 +16,9 @@ export class RemitaTransaction {
 
 	constructor(data : any) {
 
-		this.merchantId = "0000000";
-		this.serviceTypeId = "000000";
-		this.apiKey = "000000000";
+		this.merchantId = "2547916";
+		this.serviceTypeId = "4430731";
+		this.apiKey = "1946";
 		this.orderId = (new Date()).getTime();
 		this.Authorization = data.Authorization ? data.Authorization : undefined;
 		this.payerName = data.payerName ? data.payerName : undefined;

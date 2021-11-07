@@ -48,15 +48,11 @@ export abstract class AbstractFileValidator {
 
 			let fileMimetype : string = file.mimetype;
 
-			console.log(fileMimetype);
-
 			if ((<AbstractFileMagic>FileTypeMagic.getFileMagic(fileType)).getMimetypeList().indexOf(fileMimetype) == -1) {
 
 			let key : string = (<any>req.file).key;
 
 			let params : aws.S3.DeleteObjectRequest = {'Bucket' : (<NodeJS.ProcessEnv>process.env)[bucketName] as string , 'Key' : key };
-
-			console.log(params);
 
 				req.validationErrorTypeList.add(FileUploadTypeError.MIMETYPE);
 
@@ -64,15 +60,7 @@ export abstract class AbstractFileValidator {
 
 				s3.deleteObject(params , (err : aws.AWSError , deleted : aws.S3.DeleteObjectOutput) => {
 
-					console.log('Hey Hey Hey Hey Hey');
-					console.log(deleted);
-					console.log('Hey Hey Hey Hey Hey');
-
-					if (err) { 
-
-						console.log('It was here 1');
-
-						console.log(err); }
+					if (err) { console.log(err); }
 
 					else { console.log(deleted); }
 
@@ -268,10 +256,7 @@ export abstract class AbstractFileValidator {
 
 			s3.getObject(params , (err : aws.AWSError , data : aws.S3.GetObjectOutput) => {
 
-				if (err)  
-						console.log('It was here 121211221');
-
-
+				if (err) { console.log(err); }
 
 				if (data !== null) {
 
@@ -283,10 +268,7 @@ export abstract class AbstractFileValidator {
 
 							return s3.deleteObject(params , (err : aws.AWSError , deleted : aws.S3.DeleteObjectOutput) => {
 
-								if (err) { 
-						console.log('It was here 921812892198');
-
-						console.log(err); }
+								if (err) { console.log(err); }
 
 								else { console.log(deleted); }
 

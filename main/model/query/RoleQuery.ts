@@ -37,9 +37,9 @@ export class RoleQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = RoleQuery.search.status(<string>q.getParameter('search')); }
 
@@ -77,13 +77,11 @@ export class RoleQuery {
 
 	public static save(entry : Role) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
 		let text : string = `INSERT INTO ROLE (name , word , description , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
 													RETURNING _id , name , word , slug
 

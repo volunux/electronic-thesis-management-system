@@ -25,6 +25,8 @@ export class EmailMessageTypeValidationFields extends SharedAllValidationFields 
 
 							.max(300)
 
+							.trim(true)
+
 							.required()
 
 							.label('Description '); }

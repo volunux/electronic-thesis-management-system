@@ -54,8 +54,6 @@ export class AttachmentController {
 
 		let attachment : Attachment | null = <Attachment>req.bindingModel;
 
-		console.log(req.body);
-
 		attachment = await this.service.save(<Attachment>attachment);
 
 		if (attachment !== null) {

@@ -11,6 +11,8 @@ export class SharedThreeValidationFields extends SharedAllValidationFields {
 
 							.max(500)
 
+							.trim(true)
+
 							.required()
 
 							.label('Text'); }

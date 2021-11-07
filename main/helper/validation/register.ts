@@ -26,6 +26,8 @@ import { checkoutEntrySchema } from './schema/distinct/checkout';
 import { orderStatusEntrySchema } from './schema/distinct/order-status';
 import { emailMessageTypeEntrySchema } from './schema/distinct/email-message-type';
 import { emailMessageTemplateEntrySchema } from './schema/distinct/email-message-template';
+import { forgotPasswordEntrySchema } from './schema/distinct/forgot-password';
+import { resetPasswordEntrySchema } from './schema/distinct/reset-password';
 import { UserService } from '../../model/service/UserService';
 import { UserServiceImpl } from '../../model/service/impl/UserServiceImpl';
 import { User } from '../../entity/User';
@@ -418,6 +420,36 @@ export class ValidationRegister {
 		let validationResult : ValidationResult = emailMessageTypeEntrySchema.validate(req.bindingModel , joiOptions);
 
 		let msgList : ValidationErrorMessage[] = ValidationMessageBuilder.build(validationResult , 'general');
+
+		if (msgList.length > 0) { let transformedErrorList = ValidationMessageBuilder.transformValidationErrorsToSArrayOfString(msgList);
+
+			req.validationErrors.addManyError(transformedErrorList);
+
+			return next(); }
+
+		else { return next(); }
+	}
+
+	public static forgotPassword(req : Request , res : Response , next : NextFunction) : void {
+
+		let validationResult : ValidationResult = forgotPasswordEntrySchema.validate(req.body , joiOptions);
+
+		let msgList : ValidationErrorMessage[] = ValidationMessageBuilder.build(validationResult , 'forgotPassword');
+
+		if (msgList.length > 0) { let transformedErrorList = ValidationMessageBuilder.transformValidationErrorsToSArrayOfString(msgList);
+
+			req.validationErrors.addManyError(transformedErrorList);
+
+			return next(); }
+
+		else { return next(); }
+	}
+
+	public static resetPassword(req : Request , res : Response , next : NextFunction) : void {
+
+		let validationResult : ValidationResult = resetPasswordEntrySchema.validate(req.body , joiOptions);
+
+		let msgList : ValidationErrorMessage[] = ValidationMessageBuilder.build(validationResult , 'resetPassword');
 
 		if (msgList.length > 0) { let transformedErrorList = ValidationMessageBuilder.transformValidationErrorsToSArrayOfString(msgList);
 

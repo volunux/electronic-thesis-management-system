@@ -11,6 +11,8 @@ export class UserCreateValidationFields extends UserValidationFields {
 
 							.max(30)
 
+							.trim(true)
+
 							.required()
 
 							.label('Password'); }
@@ -22,6 +24,8 @@ export class UserCreateValidationFields extends UserValidationFields {
 							.min(8)
 
 							.max(30)
+
+							.trim(true)
 
 							.required()
 

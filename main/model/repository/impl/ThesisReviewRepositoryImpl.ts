@@ -1,4 +1,3 @@
-import { QueryResult , QueryResultRow } from 'pg';
 import { QueryTemplate } from '../../query/util/QueryTemplate';
 import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
@@ -117,11 +116,9 @@ export class ThesisReviewRepositoryImpl implements ThesisReviewRepository {
 
 			statuses = ServiceHelper.rowsToObjectMapper<Status>(listResult , Status);
 
-			entry.setStatuses(statuses);
-		}
+			entry.setStatuses(statuses);	}
 
 		return entry;
 	} 
-
 
 }

@@ -79,7 +79,9 @@ export class PassportConfig {
 
 				let user : User | null = await PassportConfig.service.existsLoginDetails(emailAddress);
 
-				let userRoleString : string = UserHelper.getUserRoles((<User>user).getRoles());
+				let userRoleString : string = "";
+
+				if (user !== null) userRoleString = UserHelper.getUserRoles((<User>user).getRoles());
 
 				if (user === null) { return done(null , false , {'message' : "The credential received does not exists in the record. Hint: Email Address." }); }
 
@@ -87,9 +89,11 @@ export class PassportConfig {
 
 					let userSession = new UserSession(user);
 
-					if (UserHelper.validPassword(password , userSession) === false) { return done(null , false , {'message' : 'Invalid Email Address or Password'}); }
+					userSession.setRole(userRoleString);
 
-						else { return done(null , user); } } }));
+					if (UserHelper.validPassword(password , userSession) === false) { return done(null , false , {'message' : "The credential received does not match any entry in the record. Hint: Password."}); }
+
+						else { return done(null , userSession); } } }));
 		}
 
 	public static authenticationMiddleware (req : Request , res : Response , next : NextFunction) : void {

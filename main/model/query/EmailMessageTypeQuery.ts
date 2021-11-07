@@ -13,7 +13,7 @@ export class EmailMessageTypeQuery {
 
 		let text : string = `
 
-		SELECT emt.email_message_type_id AS _id , emt.title , emt.description , emt.updated_on , emt.slug , gs.word AS status
+		SELECT emt._id , emt.title , emt.description , emt.updated_on , emt.slug , gs.word AS status
 
 		FROM EMAIL_MESSAGE_TYPE AS emt
 
@@ -37,9 +37,9 @@ export class EmailMessageTypeQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = EmailMessageTypeQuery.search.status(<string>q.getParameter('search')); }
 
@@ -56,7 +56,7 @@ export class EmailMessageTypeQuery {
 
 		let text : string = `
 
-			SELECT emt.title , emt.updated_on , emt.email_message_type_no AS num , emt.slug , gs.word AS status
+			SELECT emt.title , emt.updated_on , emt._id AS num , emt.slug , gs.word AS status
 
 			FROM EMAIL_MESSAGE_TYPE AS emt
 
@@ -75,19 +75,17 @@ export class EmailMessageTypeQuery {
 
 	public static save(entry : EmailMessageType) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO EMAIL_MESSAGE_TYPE (title , description , email_message_type_no , slug , user_id , status_id)
+		let text : string = `INSERT INTO EMAIL_MESSAGE_TYPE (title , description , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
-													RETURNING email_message_type_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
-		let values : any[] = [entry.getTitle() , entry.getDescription() , c , s , entry.getUserId()];
+		let values : any[] = [entry.getTitle() , entry.getDescription() , s , entry.getUserId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -101,7 +99,7 @@ export class EmailMessageTypeQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 										FROM STATUS) AS gs )
 
@@ -123,7 +121,7 @@ export class EmailMessageTypeQuery {
 
 													WHERE slug = $5
 
-													RETURNING email_message_type_id AS _id , title , description , slug
+													RETURNING _id , title , description , slug
 
 												`;
 
@@ -163,7 +161,7 @@ export class EmailMessageTypeQuery {
 
 		WHERE slug = $1 
 
-		RETURNING email_message_type_id AS _id , title
+		RETURNING _id , title
 
 		`;
 
@@ -179,9 +177,9 @@ export class EmailMessageTypeQuery {
 
 		DELETE FROM EMAIL_MESSAGE_TYPE
 
-		WHERE email_message_type_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING email_message_type_id AS _id , title
+		RETURNING _id , title
 
 		`;
 
@@ -211,7 +209,7 @@ export class EmailMessageTypeQuery {
 
 		DELETE FROM EMAIL_MESSAGE_TYPE
 
-		RETURNING email_message_type_id AS _id , title
+		RETURNING _id , title
 
 		`;
 

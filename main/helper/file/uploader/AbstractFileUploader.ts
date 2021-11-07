@@ -64,13 +64,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 						let bitmap : string = (<aws.S3.Body>objectData.Body).toString('hex' , 0 , 4);
 
-						console.log(bitmap);
-
 					if (!(<AbstractFileMagic>FileTypeMagic.getFileMagic(fileType)).verifySignature(bitmap)) {
-
-						console.log('Was the file invalid');
-
-						console.log(s3.config);
 
 						let deletedObject : aws.S3.DeleteObjectOutput = await s3.deleteObject(params).promise();
 
@@ -84,14 +78,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 					else { return next();	} } }
 
-				catch(err : any) {
-
-
-						console.log('It was here 88888888888888888888888888888888888888');
-
-
-
-					console.log((<aws.AWSError>err)); }	}
+				catch(err : any) { console.log((<aws.AWSError>err)); }	}
 			
 			else { return next(); } }
 	}
@@ -124,10 +111,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 						return next(); } 
 
-						catch (err : any) {
-							console.log('329888888888888888888888888888888888888888888888888888888122222222222222222222222');
-	
-							console.log((<aws.AWSError>err)); } }
+						catch (err : any) { console.log((<aws.AWSError>err)); } }
 
 				else if ((<Express.MulterS3.File>req.file).size > calculatedFileSize) {
 
@@ -145,8 +129,6 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 	public getS3Configuration(bucketName : string) : StorageEngine {
 
-		console.log((<NodeJS.ProcessEnv>process.env)[bucketName])
-
 	 return multerS3({
 
 	 	's3' : this.s3Config ,
@@ -159,7 +141,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 		
 			// let fileName : string = FileOptions.generateUUIDFileName(file.originalname);
 
-			let fileName : string = Date.now().toString();
+			let fileName : string = Date.now().toString() + FileOptions.getFileExtension(file.originalname);
 
 			cb(null, fileName);	} ,
 
@@ -187,9 +169,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 					try {
 
-						let deletedObject : aws.S3.DeleteObjectOutput = await s3.deleteObject(params).promise();
-
-						console.log("Successfully deleted entry"); } 
+						let deletedObject : aws.S3.DeleteObjectOutput = await s3.deleteObject(params).promise(); } 
 
 					catch (err : any) {
 
@@ -217,9 +197,7 @@ export abstract class AbstractFileUploader extends GeneralUploader {
 
 			try {
 
-				let deletedObject : aws.S3.DeleteObjectOutput = await this.s3.deleteObject(params).promise();
-
-				console.log("Successfully deleted entry"); } 
+				let deletedObject : aws.S3.DeleteObjectOutput = await this.s3.deleteObject(params).promise(); } 
 
 			catch (err : any) {
 

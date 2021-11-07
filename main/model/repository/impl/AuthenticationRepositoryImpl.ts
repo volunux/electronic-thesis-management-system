@@ -1,5 +1,5 @@
-import { QueryResult , QueryResultRow } from 'pg';
-import { Query } from '../../query/util/Query';
+import { QueryTemplate } from '../../query/util/QueryTemplate';
+import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
 import { EntityQueryConfig } from '../../query/util/EntityQueryConfig';
 import { ServiceHelper } from '../../util/ServiceHelper';
@@ -11,30 +11,13 @@ import { AuthenticationQuery } from '../../query/AuthenticationQuery';
 
 export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
+	private queryTemplate : QueryTemplate<User> = new SimpleQueryTemplate<User>();
+
 	public async userExists(userId : number) : Promise<boolean> {
 
 		let plan : DynamicQuery = AuthenticationQuery.userExists(userId);
 
-		let user : User | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async addAccount() : Promise<User> {
@@ -45,21 +28,16 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let countries : Country[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.relatedEntities(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (result !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.result.Country;
+				let listResult : Object[] = (<any>result).Country;
 
 				countries = ServiceHelper.rowsToObjectMapper<Country>(listResult , Country);
 
 				user.setCountries(countries);
-
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		}
 
 		return user;
 	} 
@@ -70,42 +48,14 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let user : User | null = null;
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.save(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async saveRole(entry : User) : Promise<User | null> {
 
 		let plan : DynamicQuery = AuthenticationQuery.saveRole(<User>entry);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.save(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async findRole(userId : number) : Promise<Role[]> {
@@ -114,18 +64,9 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let roles : Role[] = [];
 
-		try {
+		let result : Object[] | null = await this.queryTemplate.executePlainList(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				roles = ServiceHelper.rowsToObjectMapper<Role>(listResult , Role);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		if (result !== null) { roles = ServiceHelper.rowsToObjectMapper<Role>(result , Role); }
 
 		return roles;
 	} 
@@ -136,19 +77,9 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let userStatus : string | null = null;
 
-		try {
+		let result : Object | null = await this.queryTemplate.executePlain(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userStatus = singleResult.status;
-
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		if (result !== null) { userStatus = (<any>result).status; }
 
 		return userStatus;
 	} 
@@ -162,52 +93,14 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let plan : DynamicQuery = AuthenticationQuery.existsEmailAddress(emailAddress);
 
-		let user : User | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async existsUsername(username : string) : Promise<boolean> {
 
 		let plan : DynamicQuery = AuthenticationQuery.existsUsername(username);
 
-		let user : User | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async existsLoginDetails(emailAddress : string) : Promise<User | null> {
@@ -218,24 +111,18 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let roles : Role[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.executePlain(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (result !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
+				user = new User(result);
 
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.result.role;
+				let listResult : Object[] = (<any>result).role;
 
 				roles = ServiceHelper.rowsToObjectMapper<Role>(listResult , Role);
 
 				user.setRoles(roles);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		}
 
 		return user;
 	}
@@ -244,66 +131,21 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
 		let plan : DynamicQuery = AuthenticationQuery.createForgotPasswordToken(emailAddress , token , tokenExpiryDate);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.findOne(plan.getText() , plan.getValues() , User);
 	}
 
 	public async validateResetPasswordToken(token : string) : Promise<User | null> {
 
 		let plan : DynamicQuery = AuthenticationQuery.validateResetPasswordToken(token);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.findOne(plan.getText() , plan.getValues() , User);
 	}
 
 	public async saveNewPassword(entry : User) : Promise<User | null> {
 
 		let plan : DynamicQuery = AuthenticationQuery.saveNewPassword(entry);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.save(plan.getText() , plan.getValues() , User);
 	}
 
 }

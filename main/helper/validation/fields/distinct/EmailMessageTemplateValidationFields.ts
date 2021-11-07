@@ -25,7 +25,7 @@ export class EmailMessageTemplateValidationFields extends SharedAllValidationFie
 
 							.max(5000)
 
-							.trim()
+							.trim(true)
 
 							.required()
 

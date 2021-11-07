@@ -10,6 +10,8 @@ export class SharedAllValidationFields {
 
 							.max(150)
 
+							.trim(true)
+
 							.required()
 
 							.label('Name'); }
@@ -21,6 +23,8 @@ export class SharedAllValidationFields {
 							.min(1)
 
 							.max(150)
+
+							.trim(true)
 
 							.optional()
 
@@ -34,6 +38,8 @@ export class SharedAllValidationFields {
 
 							.max(20)
 
+							.trim(true)
+
 							.required()
 
 							.label('Word'); }
@@ -46,6 +52,8 @@ export class SharedAllValidationFields {
 
 							.max(8)
 
+							.trim(true)
+
 							.required()
 
 							.label('Abbeviation'); }
@@ -57,6 +65,8 @@ export class SharedAllValidationFields {
 							.min(10)
 
 							.max(250)
+
+							.trim(true)
 
 							.optional()
 
@@ -71,6 +81,8 @@ export class SharedAllValidationFields {
 							.min(1)
 
 							.max(30)
+
+							.trim(true)
 
 							.optional()
 

@@ -13,7 +13,7 @@ export class SendMailQuery {
 
 		let text : string = `
 
-		SELECT sm.send_mail_id AS _id , sm.title , sm.is_delivered , sm.updated_on , sm.slug , sm.description , gs.word AS status
+		SELECT sm._id , sm.title , sm.is_delivered , sm.updated_on , sm.slug , sm.description , gs.word AS status
 
 		FROM SEND_MAIL AS sm
 
@@ -37,9 +37,9 @@ export class SendMailQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = SendMailQuery.search.status(<string>q.getParameter('search')); }
 
@@ -58,7 +58,7 @@ export class SendMailQuery {
 
 		let text : string = `
 
-			SELECT sm.name , sm.word , sm.updated_on , sm.send_mail_no AS num , sm.slug , gs.word AS status
+			SELECT sm.name , sm.word , sm.updated_on , sm._id AS num , sm.slug , gs.word AS status
 
 			FROM SEND_MAIL AS sm
 
@@ -81,15 +81,15 @@ export class SendMailQuery {
 
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO SEND_MAIL (name , word , description , send_mail_no , slug , user_id , status_id)
+		let text : string = `INSERT INTO SEND_MAIL (name , word , description , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
 													RETURNING send_mail_id AS _id , name , word , slug
 
 												`;
 
-		let values : any[] = [entry.getTitle() , entry.getMessage() , entry.getEmailAddress() , c , s , entry.getUserId()];
+		let values : any[] = [entry.getTitle() , entry.getMessage() , entry.getEmailAddress() , s , entry.getUserId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -103,7 +103,7 @@ export class SendMailQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 										FROM STATUS) AS gs )
 
@@ -125,7 +125,7 @@ export class SendMailQuery {
 
 													WHERE slug = $6
 
-													RETURNING send_mail_id AS _id , name , word , slug
+													RETURNING _id , name , word , slug
 
 												`;
 
@@ -165,7 +165,7 @@ export class SendMailQuery {
 
 		WHERE slug = $1 
 
-		RETURNING send_mail_id AS _id , name , word , slug
+		RETURNING _id , name , word , slug
 
 		`;
 
@@ -181,9 +181,9 @@ export class SendMailQuery {
 
 		DELETE FROM SEND_MAIL
 
-		WHERE send_mail_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING send_mail_id AS _id , name , word , slug
+		RETURNING _id , name , word , slug
 
 		`;
 
@@ -213,7 +213,7 @@ export class SendMailQuery {
 
 		DELETE FROM SEND_MAIL
 
-		RETURNING send_mail_id AS _id , name , word , slug
+		RETURNING _id , name , word , slug
 
 		`;
 

@@ -42,8 +42,12 @@ HomeRouter.post('/sign-up' , UserProfile.noAuthentication , HomeController.setUs
 
 HomeRouter.get('/sign-out' , UserProfile.logOut , ctrl.signOut);
 
-HomeRouter.get('/forgot-password' , ctrl.signUpAccount);
+HomeRouter.get('/forgot-password' , ctrl.forgotPassword);
 
-HomeRouter.get('/reset/:token' , ctrl.signUpAccount);
+HomeRouter.post('/forgot-password' , ValidationRegister.forgotPassword , ctrl.forgotPasswordConfirm);
+
+HomeRouter.get('/reset/:token' , ctrl.resetPassword);
+
+HomeRouter.post('/reset/:token' , ValidationRegister.resetPassword , ctrl.saveNewPassword);
 
 HomeRouter.get('/payment/validation' , ctrl2.verifyOrder);

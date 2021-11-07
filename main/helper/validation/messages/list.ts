@@ -5,6 +5,7 @@ import { displayMessage } from './distinct/display';
 import { checkoutMessages } from './distinct/checkout';
 import { emailMessageTemplateMessages } from './distinct/email-message-template';
 import { emailMessageTypeMessages } from './distinct/email-message-type';
+import { forgotPasswordMessages } from './distinct/forgot-password';
 
 export const validationMessageList : { [key : string] : any } = {
 
@@ -20,6 +21,9 @@ export const validationMessageList : { [key : string] : any } = {
 
 	'emailMessageTemplate' : { ...emailMessageTemplateMessages , ...allMessages } ,
 
-	'emailMessageType' : { ...emailMessageTypeMessages , ...allMessages }
+	'emailMessageType' : { ...emailMessageTypeMessages , ...allMessages } ,
 
+	'forgotPassword' : { ...forgotPasswordMessages , ...allMessages } ,
+
+	'resetPassword' : { ...userMessages , ...allMessages } ,
 }

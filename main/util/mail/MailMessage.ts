@@ -4,4 +4,6 @@ export interface MailMessage {
 
 	getBody() : string;
 
+	setBody(body : string) : void;
+
 }

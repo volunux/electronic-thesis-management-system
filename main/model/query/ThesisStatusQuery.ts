@@ -35,9 +35,9 @@ export class ThesisStatusQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'name') { $sq = ThesisStatusQuery.search.label(<string>q.getParameter('search')); }
 

@@ -13,7 +13,7 @@ export class ThesisReplyQuery {
 
 		let text : string = `
 
-			SELECT thrpl.thesis_reply_id AS _id , thrpl.text , thrpl.comment_author_name , thrpl.comment_id AS review_id , thrpl.updated_on , thrpl.slug , thrpl.description , gs.word AS status
+			SELECT thrpl._id , thrpl.text , thrpl.comment_author_name , thrpl.comment_id AS review_id , thrpl.updated_on , thrpl.slug , thrpl.description , gs.word AS status
 
 			FROM THESIS_REPLY AS thrpl
 
@@ -37,9 +37,9 @@ export class ThesisReplyQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = ThesisReplyQuery.search.status(<string>q.getParameter('search')); }
 
@@ -54,7 +54,7 @@ export class ThesisReplyQuery {
 
 		let text : string = `
 
-			SELECT thrpl.text , thrpl.updated_on , thrpl.thesis_reply_no AS num , thrpl.slug , gs.word AS status
+			SELECT thrpl.text , thrpl.updated_on , thrpl._id AS num , thrpl.slug , gs.word AS status
 
 			FROM THESIS_REPLY AS thrpl
 
@@ -73,19 +73,17 @@ export class ThesisReplyQuery {
 
 	public static save(entry : ThesisReply) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO THESIS_REPLY (text , comment_author_name , thesis_reply_no , slug , user_id , comment_id , status_id)
+		let text : string = `INSERT INTO THESIS_REPLY (text , comment_author_name , slug , user_id , comment_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , $6 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
-													RETURNING thesis_reply_id AS _id , slug
+													RETURNING _id , slug
 
 												`;
 
-		let values : any[] = [entry.getText() , entry.getCommentAuthorName() , c , s , entry.getUserId() , entry.getReviewId()];
+		let values : any[] = [entry.getText() , entry.getCommentAuthorName() , s , entry.getUserId() , entry.getReviewId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -121,7 +119,7 @@ export class ThesisReplyQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 									FROM STATUS) AS gs )
 
@@ -199,9 +197,9 @@ export class ThesisReplyQuery {
 
 		DELETE FROM THESIS_REPLY
 
-		WHERE thesis_reply_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING thesis_reply_id AS _id , text , slug
+		RETURNING _id , text , slug
 
 		`;
 
@@ -231,7 +229,7 @@ export class ThesisReplyQuery {
 
 		DELETE FROM THESIS_REPLY
 
-		RETURNING thesis_reply_id AS _id , text , comment_author_name , slug
+		RETURNING _id , text , comment_author_name , slug
 
 		`;
 

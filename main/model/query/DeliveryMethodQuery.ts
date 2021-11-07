@@ -13,7 +13,7 @@ export class DeliveryMethodQuery {
 
 		let text : string = `
 
-		SELECT dm.delivery_method_id AS _id , dm.description , dm.title , dm.updated_on , dm.slug , gs.word AS status
+		SELECT dm._id , dm.description , dm.title , dm.updated_on , dm.slug , gs.word AS status
 
 		FROM DELIVERY_METHOD AS dm
 
@@ -37,9 +37,9 @@ export class DeliveryMethodQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 			
-		p = p > 0 ? p * 10 : 0;
+		p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = DeliveryMethodQuery.search.status(<string>q.getParameter('search')); }
 
@@ -56,7 +56,7 @@ export class DeliveryMethodQuery {
 
 		let text : string = `
 
-			SELECT dm.title , dm.updated_on , dm.delivery_method_no AS num , dm.slug , gs.word AS status
+			SELECT dm.title , dm.updated_on , dm._id AS num , dm.slug , gs.word AS status
 
 			FROM DELIVERY_METHOD AS dm
 
@@ -75,19 +75,17 @@ export class DeliveryMethodQuery {
 
 	public static save(entry : DeliveryMethod) : DynamicQuery {
 
-		let c : number = +(crypto({'length' : 9 , 'type' : 'numeric'}));
-
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO DELIVERY_METHOD (title , delivery_method_no , slug , user_id , status_id)
+		let text : string = `INSERT INTO DELIVERY_METHOD (title , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
-													RETURNING delivery_method_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
-		let values : any[] = [entry.getTitle() , c , s , entry.getUserId()];
+		let values : any[] = [entry.getTitle() , s , entry.getUserId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -101,7 +99,7 @@ export class DeliveryMethodQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 										FROM STATUS) AS gs )
 
@@ -123,11 +121,11 @@ export class DeliveryMethodQuery {
 
 													WHERE slug = $6
 
-													RETURNING delivery_method_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 													`;
 
-		let values : any[] = [entry.getName() , entry.getDescription() , entry.getStatus() , entry.getUserId() , 'NOW()' , slug];
+		let values : any[] = [entry.getTitle() , entry.getDescription() , entry.getStatus() , entry.getUserId() , 'NOW()' , slug];
 
 		return DynamicQuery.create(text , values);
 
@@ -163,7 +161,7 @@ export class DeliveryMethodQuery {
 
 		WHERE slug = $1 
 
-		RETURNING delivery_method_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -179,9 +177,9 @@ export class DeliveryMethodQuery {
 
 		DELETE FROM DELIVERY_METHOD
 
-		WHERE delivery_method_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING delivery_method_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -211,7 +209,7 @@ export class DeliveryMethodQuery {
 
 		DELETE FROM DELIVERY_METHOD
 
-		RETURNING delivery_method_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -242,7 +240,7 @@ export class DeliveryMethodQuery {
 
 		let text : string = `
 
-		SELECT dm.title , dm.slug , dm.status_id AS status
+		SELECT dm.title , dm.description , dm.slug , dm.status_id AS status
 
 		FROM DELIVERY_METHOD AS dm
 

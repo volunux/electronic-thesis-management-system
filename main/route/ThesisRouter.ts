@@ -31,7 +31,7 @@ const imageValidator : ImageValidator = ImageValidator.getInstance(imageConfigur
 
 const documentValidator : DocumentValidator = DocumentValidator.getInstance(documentConfigurer.getS3Instance() , documentConfigurer.getConfiguration());
 
-const thesisDocumentBucketName : string = "photos_bucket";
+const thesisDocumentBucketName : string = "thesis_doc";
 
 const thesisCoverImageBucketName : string = "thesis_cover_image";
 

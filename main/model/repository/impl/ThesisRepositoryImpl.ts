@@ -1,4 +1,5 @@
-import { QueryResult , QueryResultRow } from 'pg';
+import { QueryTemplate } from '../../query/util/QueryTemplate';
+import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
 import { EntityQueryConfig } from '../../query/util/EntityQueryConfig';
 import { ServiceHelper } from '../../util/ServiceHelper';
@@ -17,162 +18,59 @@ import { ThesisGrade } from '../../../entity/ThesisGrade';
 
 export class ThesisRepositoryImpl implements ThesisRepository {
 
+	private queryTemplate : QueryTemplate<Thesis> = new SimpleQueryTemplate<Thesis>();
+
+	private queryTemplateImage : QueryTemplate<ThesisCoverImage> = new SimpleQueryTemplate<ThesisCoverImage>();
+
+	private queryTemplateDocument : QueryTemplate<ThesisDocument> = new SimpleQueryTemplate<ThesisDocument>();
+
 	public async findOne(slug : string) : Promise<Thesis | null> {
 
 		let plan : DynamicQuery = ThesisQuery.findOne(slug);
 
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
+		return await this.queryTemplate.findOne(plan.getText() , plan.getValues() , Thesis);
 	}
 
 	public async entryExists(slug : string) : Promise<Thesis | null> {
 
 		let plan : DynamicQuery = ThesisQuery.entryExists(slug);
 
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
+		return await this.queryTemplate.entryExists(plan.getText() , plan.getValues() , Thesis);
 	} 
 
 	public async existsOne(slug : string) : Promise<boolean> {
 
 		let plan : DynamicQuery = ThesisQuery.existsOne(slug);
 
-		let thesis : Thesis | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async existsThesisCoverImage(thesisId : string) : Promise<ThesisCoverImage | null> {
 
 		let plan : DynamicQuery = ThesisQuery.existsThesisCoverImage(thesisId);
 
-		let thesisCoverImage : ThesisCoverImage | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisCoverImage = new ThesisCoverImage(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisCoverImage;
+		return await this.queryTemplateImage.entryExists(plan.getText() , plan.getValues() , ThesisCoverImage);
 	} 
 
 	public async existsThesisDocument(thesisId : string) : Promise<ThesisDocument | null> {
 
 		let plan : DynamicQuery = ThesisQuery.existsThesisDocument(thesisId);
 
-		let thesisDocument : ThesisDocument | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisDocument = new ThesisDocument(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisDocument;
+		return await this.queryTemplateDocument.entryExists(plan.getText() , plan.getValues() , ThesisDocument);
 	} 
 
 	public async findAll(eqp : EntityQueryConfig) : Promise<Thesis[]> {
 
 		let plan : DynamicQuery = ThesisQuery.findAll(eqp);
 
-		let theses : Thesis[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				theses = ServiceHelper.rowsToObjectMapper<Thesis>(listResult , Thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return theses;
+		return await this.queryTemplate.findAll(plan.getText() , plan.getValues() , Thesis);
 	} 
 
 	public async findAllSubmission(eqp : EntityQueryConfig) : Promise<Thesis[]> {
 
 		let plan : DynamicQuery = ThesisQuery.findAllSubmission(eqp);
 
-		let theses : Thesis[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				theses = ServiceHelper.rowsToObjectMapper<Thesis>(listResult , Thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return theses;
+		return await this.queryTemplate.findAll(plan.getText() , plan.getValues() , Thesis);
 	} 
 
 	public async addOne() : Promise<Thesis> {
@@ -181,11 +79,7 @@ export class ThesisRepositoryImpl implements ThesisRepository {
 
 		let thesis : Thesis = new Thesis({});
 		
-		try {
-
-			await this.relatedEntities(thesis);
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(<Thesis>thesis);
 
 		return thesis;
 	} 
@@ -194,139 +88,123 @@ export class ThesisRepositoryImpl implements ThesisRepository {
 
 		let plan : DynamicQuery = ThesisQuery.save(<Thesis>entry);
 
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
+		return await this.queryTemplate.save(plan.getText() , plan.getValues() , Thesis);
 	}
 
 	public async saveThesisCoverImage(entry : ThesisCoverImage) : Promise<ThesisCoverImage | null> {
 
 		let plan : DynamicQuery = ThesisQuery.saveThesisCoverImage(<ThesisCoverImage>entry);
 
-		let thesisCoverImage : ThesisCoverImage | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisCoverImage = new ThesisCoverImage(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisCoverImage;
+		return await this.queryTemplateImage.save(plan.getText() , plan.getValues() , ThesisCoverImage);
 	}
 
 	public async updateThesisCoverImage(slug : string , coverImageId : number | string) : Promise<ThesisCoverImage | null> {
 
 		let plan : DynamicQuery = ThesisQuery.existsOne(slug);
 
-		let thesisCoverImage : ThesisCoverImage | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisCoverImage = new ThesisCoverImage(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisCoverImage;
+		return await this.queryTemplateImage.entryExists(plan.getText() , plan.getValues() , ThesisCoverImage);
 	}
 
 	public async saveThesisDocument(entry : ThesisDocument) : Promise<ThesisDocument | null> {
 
 		let plan : DynamicQuery = ThesisQuery.saveThesisDocument(<ThesisDocument>entry);
 
-		let thesisDocument : ThesisDocument | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisDocument = new ThesisDocument(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisDocument;
+		return await this.queryTemplateDocument.save(plan.getText() , plan.getValues() , ThesisDocument);
 	}
 
 	public async updateThesisDocument(slug : string , documentId : number | string) : Promise<ThesisDocument | null> {
 
 		let plan : DynamicQuery = ThesisQuery.existsOne(slug);
 
-		let thesisDocument : ThesisDocument | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisDocument = new ThesisDocument(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisDocument;
+		return await this.queryTemplateDocument.entryExists(plan.getText() , plan.getValues() , ThesisDocument);
 	}
 
 	public async updateOne(slug : string) : Promise<Thesis | null> {
 
 		let plan : DynamicQuery = ThesisQuery.updateOne(slug);
 
-		let thesis : Thesis | null = null;
+		let thesis : Thesis | null = await this.queryTemplate.updateOne(plan.getText() , plan.getValues() , Thesis);
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-
-				await this.relatedEntities(thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(<Thesis>thesis);
 
 		return thesis;
 	} 
 
+	public async update(slug : string , entry : Thesis) : Promise<Thesis | null> {
+
+		let plan : DynamicQuery = ThesisQuery.update(slug , <Thesis>entry);
+
+		return await this.queryTemplate.update(plan.getText() , plan.getValues() , Thesis);
+	}
+
+	public async updateStatus(slug : string , status : string) : Promise<boolean> {
+
+		let plan : DynamicQuery = ThesisQuery.updateStatus(slug , status);
+
+		return await this.queryTemplate.updateAndReturnBool(plan.getText() , plan.getValues());
+	}
+
+	public async findAllStatus() : Promise<ThesisStatus[]> {
+
+		let queryTemplateStatus : QueryTemplate<ThesisStatus> = new SimpleQueryTemplate<ThesisStatus>();
+
+		let plan : DynamicQuery = ThesisQuery.findAllStatus();
+
+		return await queryTemplateStatus.findAll(plan.getText() , plan.getValues() , ThesisStatus);
+	} 
+
+	public async deleteOne(slug : string) : Promise<Thesis | null> {
+
+		let plan : DynamicQuery = ThesisQuery.deleteOne(slug);
+
+		return await this.queryTemplate.deleteOne(plan.getText() , plan.getValues() , Thesis);
+	} 
+
+	public async remove(slug : string) : Promise<Thesis | null> {
+
+		let plan : DynamicQuery = ThesisQuery.remove(slug);
+
+		return await this.queryTemplate.delete(plan.getText() , plan.getValues() , Thesis);
+	} 
+
+	public async deleteThesisCoverImage(thesisId : string) : Promise<ThesisCoverImage | null> {
+
+		let plan : DynamicQuery = ThesisQuery.deleteThesisCoverImage(thesisId);
+
+		return await this.queryTemplateImage.delete(plan.getText() , plan.getValues() , ThesisCoverImage);
+	} 
+
+	public async deleteThesisDocument(thesisId : string) : Promise<ThesisDocument | null> {
+
+		let plan : DynamicQuery = ThesisQuery.deleteThesisDocument(thesisId);
+
+		return await this.queryTemplateDocument.delete(plan.getText() , plan.getValues() , ThesisDocument);
+	} 
+
+	public async deleteMany(entries : string) : Promise<Thesis[]> {
+
+		let plan : DynamicQuery = ThesisQuery.deleteMany(entries);
+
+		return await this.queryTemplate.deleteMany(plan.getText() , plan.getValues() , Thesis);
+	}
+
+	public async deleteAll() : Promise<Thesis[]> {
+
+		let plan : DynamicQuery = ThesisQuery.deleteAll();
+
+		return await this.queryTemplate.deleteAll(plan.getText() , plan.getValues() , Thesis);
+	}
+
+	public async findAndDeleteAll() : Promise<Thesis[]> {
+
+		let plan : DynamicQuery = ThesisQuery.findAndDeleteAll();
+
+		return await this.queryTemplate.findAndDeleteAll(plan.getText() , plan.getValues() , Thesis);
+	}
+
 	public async relatedEntities(entry : Thesis) : Promise<Thesis | null> {
 
-		let plan : DynamicQuery = ThesisQuery.relatedEntities();
+		let plan : DynamicQuery = ThesisQuery.relatedEntities();	
 
 		let faculties : Faculty[] = [];
 
@@ -338,21 +216,19 @@ export class ThesisRepositoryImpl implements ThesisRepository {
 
 		let thesisStatuses : ThesisStatus[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.relatedEntities(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (result !== null && entry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
+				let listResult : Object[] = (<any>result).Faculty;
 
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Faculty;
+				let listResult2 : Object[] = (<any>result).Department;
 
-				let listResult2 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Department;
+				let listResult3 : Object[] = (<any>result).ThesisGrade;
 
-				let listResult3 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.ThesisGrade;
+				let listResult4 : Object[] = (<any>result).Publisher;
 
-				let listResult4 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Publisher;
-
-				let listResult5 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.ThesisStatus;
+				let listResult5 : Object[] = (<any>result).ThesisStatus;
 
 				faculties = ServiceHelper.rowsToObjectMapper<Faculty>(listResult , Faculty);
 
@@ -370,234 +246,11 @@ export class ThesisRepositoryImpl implements ThesisRepository {
 
 				entry.setThesisGrades(thesisGrades);
 
-				entry.setPublishers(publishers);
+				entry.setPublishers(publishers); 
 
-				entry.setThesisStatuses(thesisStatuses);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+				entry.setThesisStatuses(thesisStatuses); }
 
 		return entry;
 	} 
-
-	public async update(slug : string , entry : Thesis) : Promise<Thesis | null> {
-
-		let plan : DynamicQuery = ThesisQuery.update(slug , <Thesis>entry);
-
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
-	}
-
-	public async updateStatus(slug : string , status : string) : Promise<boolean> {
-
-		let plan : DynamicQuery = ThesisQuery.updateStatus(slug , status);
-
-		let entryUpdated : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				entryUpdated = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return entryUpdated;
-	}
-
-	public async findAllStatus() : Promise<ThesisStatus[]> {
-
-		let plan : DynamicQuery = ThesisQuery.findAllStatus();
-
-		let thesisStatuses : ThesisStatus[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				thesisStatuses = ServiceHelper.rowsToObjectMapper<ThesisStatus>(listResult , ThesisStatus);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisStatuses;
-	} 
-
-	public async deleteOne(slug : string) : Promise<Thesis | null> {
-
-		let plan : DynamicQuery = ThesisQuery.deleteOne(slug);
-
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
-	} 
-
-	public async remove(slug : string) : Promise<Thesis | null> {
-
-		let plan : DynamicQuery = ThesisQuery.remove(slug);
-
-		let thesis : Thesis | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesis = new Thesis(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesis;
-	} 
-
-	public async deleteThesisCoverImage(thesisId : string) : Promise<ThesisCoverImage | null> {
-
-		let plan : DynamicQuery = ThesisQuery.deleteThesisCoverImage(thesisId);
-
-		let thesisCoverImage : ThesisCoverImage | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisCoverImage = new ThesisCoverImage(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisCoverImage;
-	} 
-
-	public async deleteThesisDocument(thesisId : string) : Promise<ThesisDocument | null> {
-
-		let plan : DynamicQuery = ThesisQuery.deleteThesisDocument(thesisId);
-
-		let thesisDocument : ThesisDocument | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				thesisDocument = new ThesisDocument(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return thesisDocument;
-	} 
-
-	public async deleteMany(entries : string) : Promise<Thesis[]> {
-
-		let plan : DynamicQuery = ThesisQuery.deleteMany(entries);
-
-		let theses : Thesis[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				theses = ServiceHelper.rowsToObjectMapper<Thesis>(listResult , Thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return theses;
-	}
-
-	public async deleteAll() : Promise<Thesis[]> {
-
-		let plan : DynamicQuery = ThesisQuery.deleteAll();
-
-		let theses : Thesis[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				theses = ServiceHelper.rowsToObjectMapper<Thesis>(listResult , Thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return theses;
-	}
-
-	public async findAndDeleteAll() : Promise<Thesis[]> {
-
-		let plan : DynamicQuery = ThesisQuery.findAndDeleteAll();
-
-		let theses : Thesis[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				theses = ServiceHelper.rowsToObjectMapper<Thesis>(listResult , Thesis);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return theses;
-	}
 
 }

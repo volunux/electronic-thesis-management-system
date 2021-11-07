@@ -111,9 +111,9 @@ export class ThesisValidationFields {
 
 							.max(200)
 
-							.required()
-
 							.trim(true)
+
+							.required()
 
 							.label('Supervisor'); }
 
@@ -124,6 +124,8 @@ export class ThesisValidationFields {
 							.min(1)
 
 							.max(4)
+
+							.trim(true)
 
 							.required()
 
@@ -162,6 +164,8 @@ export class ThesisValidationFields {
 							.max(200)
 
 							.required()
+
+							.trim(true)
 
 							.label('Author Name'); }
 

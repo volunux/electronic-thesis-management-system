@@ -10,7 +10,7 @@ export const checkoutMessages : { [key : string] : any } = {
 
 	'state' : ValidationMessageType.getStringInstance(true , 1 , 20 , false , true , 'String') ,
 
-	'contact_address' : ValidationMessageType.getStringInstance(true , 1 , 60 , false , true , 'String') ,
+	'contact_address' : ValidationMessageType.getStringInstance(true , 10 , 60 , false , true , 'String') ,
 
 	'zip' : ValidationMessageType.getStringInstance(true , 1 , 10 , false , true , 'String') ,
 

@@ -15,19 +15,19 @@ export class OrderQuery {
 
 		SELECT ord.order_id AS _id , ord.order_reference , ord.amount , ord.quantity , ord.city , ord.state , ord.contact_address , ord.phone_number , ord.zip , ct.name AS country , pm.title AS payment_method ,
 
-		dm.title AS delivery_method , ord.updated_on , ord.created_on , ord.order_no AS num , ord.slug , ord.user_id , usr.first_name || ' ' || usr.last_name AS full_name , os.title AS status 
+		dm.title AS delivery_method , ord.updated_on , ord.created_on , ord.slug , ord.user_id , usr.first_name || ' ' || usr.last_name AS full_name , os.title AS status 
 
 		FROM ORDERS AS ord
 
-		LEFT JOIN ORDER_STATUS AS os ON os.order_status_id = ord.order_status_id
+		LEFT JOIN ORDER_STATUS AS os ON os._id = ord.order_status_id
 
-		INNER JOIN USERS AS usr ON usr.user_id = ord.user_id
+		INNER JOIN USERS AS usr ON usr._id = ord.user_id
 
-		INNER JOIN PAYMENT_METHOD AS pm ON pm.payment_method_id = ord.payment_method_id
+		INNER JOIN PAYMENT_METHOD AS pm ON pm._id = ord.payment_method_id
 
-		INNER JOIN DELIVERY_METHOD AS dm ON dm.delivery_method_id = ord.delivery_method_id
+		INNER JOIN DELIVERY_METHOD AS dm ON dm._id = ord.delivery_method_id
 
-		INNER JOIN COUNTRY AS ct ON ct.country_id = ord.country_id
+		INNER JOIN COUNTRY AS ct ON ct._id = ord.country_id
 
 		WHERE ord.slug = $1
 
@@ -49,7 +49,7 @@ export class OrderQuery {
 
 		FROM ORDER_ITEM AS oi
 
-		INNER JOIN THESIS AS th ON th.thesis_id = oi.item_id
+		INNER JOIN THESIS AS th ON th._id = oi.item_id
 
 		WHERE oi.order_id = $1
 
@@ -69,7 +69,7 @@ export class OrderQuery {
 
 		if (q !== null && q !== undefined) {
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = OrderQuery.search.status(<string>q.getParameter('search')); }
 
@@ -90,11 +90,11 @@ export class OrderQuery {
 
 		let text : string = `
 
-			SELECT ord.order_id AS _id , ord.order_reference , ord.amount , ord.quantity , ord.city , ord.updated_on , ord.order_no AS num , ord.slug , os.title AS status
+			SELECT ord.order_id AS _id , ord.order_reference , ord.amount , ord.quantity , ord.city , ord.updated_on , ord.order_id AS num , ord.slug , os.title AS status
 
 			FROM ORDERS AS ord
 
-			INNER JOIN ORDER_STATUS AS os ON os.order_status_id = ord.order_status_id
+			INNER JOIN ORDER_STATUS AS os ON os._id = ord.order_status_id
 
 			${joinResult} ${conditionResult}
 
@@ -153,7 +153,7 @@ export class OrderQuery {
 
 		FROM ORDERS AS ord
 
-		LEFT JOIN ORDER_STATUS AS os ON os.order_status_id = ord.order_status_id
+		LEFT JOIN ORDER_STATUS AS os ON os._id = ord.order_status_id
 
 		WHERE ord.slug = $1
 
@@ -191,7 +191,7 @@ export class OrderQuery {
 
 		DELETE FROM ORDERS
 
-		WHERE order_no IN (${entries})
+		WHERE order_id IN (${entries})
 
 		RETURNING order_id AS _id , contact_address , state , city
 

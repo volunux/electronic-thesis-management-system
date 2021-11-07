@@ -15,9 +15,38 @@
 <li>
 	<a href ="/thesis/user"> Thesis </a>
 </li>
+
+{{#if isUserLoggedIn}}
+
 <li>
-	<a href ="#">Home </a>
+	<a href ="/profile">Profile </a>
 </li>
+
+{{/if}}
+
+{{#if isUserLoggedIn}}
+
+<li>
+	<a href ="/sign-out">Sign out </a>
+</li>
+
+{{/if}}
+
+{{#unless isUserLoggedIn}}
+
+<li>
+	<a href ="/sign-in">Sign in </a>
+</li>
+
+{{/unless}}
+
+{{#unless isUserLoggedIn}}
+
+<li>
+	<a href ="/sign-up">Sign up </a>
+</li>
+
+{{/unless}}
 
 </ul>
 

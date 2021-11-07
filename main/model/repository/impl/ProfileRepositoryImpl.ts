@@ -1,7 +1,6 @@
-import { QueryResult , QueryResultRow } from 'pg';
-import { Query } from '../../query/util/Query';
+import { QueryTemplate } from '../../query/util/QueryTemplate';
+import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
-import { EntityQueryConfig } from '../../query/util/EntityQueryConfig';
 import { ServiceHelper } from '../../util/ServiceHelper';
 import { Faculty } from '../../../entity/Faculty';
 import { Department } from '../../../entity/Department';
@@ -15,162 +14,61 @@ import { ProfileQuery } from '../../query/ProfileQuery';
 
 export class ProfileRepositoryImpl implements ProfileRepository {
 
+	private queryTemplate : QueryTemplate<User> = new SimpleQueryTemplate<User>();
+
+	private queryTemplateDisplay : QueryTemplate<UserProfilePhoto> = new SimpleQueryTemplate<UserProfilePhoto>();
+
+	private queryTemplateSignature : QueryTemplate<UserSignature> = new SimpleQueryTemplate<UserSignature>();
+
 	public async findOne(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.findOne(userId);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.findOne(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async existsOne(userId : number) : Promise<boolean> {
 
 		let plan : DynamicQuery = ProfileQuery.existsOne(userId);
 
-		let user : User | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async existsUserProfilePhoto(userId : number) : Promise<UserProfilePhoto | null> {
 
 		let plan : DynamicQuery = ProfileQuery.existsUserProfilePhoto(userId);
 
-		let userProfilePhoto : UserProfilePhoto | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userProfilePhoto = new UserProfilePhoto(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userProfilePhoto;
+		return await this.queryTemplateDisplay.entryExists(plan.getText() , plan.getValues() , UserProfilePhoto);
 	} 
 
 	public async existsUserSignature(userId : number) : Promise<UserSignature | null> {
 
 		let plan : DynamicQuery = ProfileQuery.existsUserSignature(userId);
 
-		let userSignature : UserSignature | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userSignature = new UserSignature(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userSignature;
+		return await this.queryTemplateSignature.entryExists(plan.getText() , plan.getValues() , UserSignature);
 	} 
 
 	public async saveUserProfilePhoto(userId : number , entry : UserProfilePhoto) : Promise<UserProfilePhoto | null> {
 
 		let plan : DynamicQuery = ProfileQuery.saveUserProfilePhoto(userId , <UserProfilePhoto>entry);
 
-		let userProfilePhoto : UserProfilePhoto | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userProfilePhoto = new UserProfilePhoto(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userProfilePhoto;
+		return await this.queryTemplateDisplay.save(plan.getText() , plan.getValues() , UserProfilePhoto);
 	}
 
 	public async saveUserSignature(userId : number , entry : UserSignature) : Promise<UserSignature | null> {
 
 		let plan : DynamicQuery = ProfileQuery.saveUserSignature(userId , <UserSignature>entry);
 
-		let userSignature : UserSignature | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userSignature = new UserSignature(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userSignature;
+		return await this.queryTemplateSignature.save(plan.getText() , plan.getValues() , UserSignature);
 	}
 
 	public async updateOne(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.updateOne(userId);
 
-		let user : User | null = null;
+		let user : User | null = await this.queryTemplate.updateOne(plan.getText() , plan.getValues() , User);
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-
-				await this.relatedEntities(user);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(<User>user);
 
 		return user;
 	} 
@@ -187,19 +85,17 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 
 		let countries : Country[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.relatedEntities(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		if (result !== null && entry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
+				let listResult : Object[] = (<any>result).result.Faculty;
 
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Faculty;
+				let listResult2 : Object[] = (<any>result).result.Department;
 
-				let listResult2 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Department;
+				let listResult3 : Object[] = (<any>result).result.Level;
 
-				let listResult3 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Level;
-
-				let listResult4 : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.Country;
+				let listResult4 : Object[] = (<any>result).result.Country;
 
 				faculties = ServiceHelper.rowsToObjectMapper<Faculty>(listResult , Faculty);
 
@@ -215,10 +111,7 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 
 				entry.setLevels(levels);
 
-				entry.setCountries(countries);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+				entry.setCountries(countries); }
 
 		return entry;
 	} 
@@ -227,198 +120,63 @@ export class ProfileRepositoryImpl implements ProfileRepository {
 
 		let plan : DynamicQuery = ProfileQuery.update(userId , <User>entry);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.update(plan.getText() , plan.getValues() , User);
 	}
 
 	public async deleteProfilePhoto(userId : number) : Promise<UserProfilePhoto | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deleteProfilePhoto(userId);
 
-		let userProfilePhoto : UserProfilePhoto | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userProfilePhoto = new UserProfilePhoto(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userProfilePhoto;
+		return await this.queryTemplateDisplay.delete(plan.getText() , plan.getValues() , UserProfilePhoto);
 	} 
 
 	public async deleteProfilePhotoByKey(key : string) : Promise<UserProfilePhoto | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deleteProfilePhotoByKey(key);
 
-		let userProfilePhoto : UserProfilePhoto | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userProfilePhoto = new UserProfilePhoto(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userProfilePhoto;
+		return await this.queryTemplateDisplay.delete(plan.getText() , plan.getValues() , UserProfilePhoto);
 	} 
 
 	public async deleteSignatureByKey(key : string) : Promise<UserSignature | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deleteSignatureByKey(key);
 
-		let userSignature : UserSignature | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userSignature = new UserSignature(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userSignature;
+		return await this.queryTemplateSignature.delete(plan.getText() , plan.getValues() , UserSignature);
 	} 
 
 	public async deleteSignature(userId : number) : Promise<UserSignature | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deleteSignature(userId);
 
-		let userSignature : UserSignature | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				userSignature = new UserSignature(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return userSignature;
+		return await this.queryTemplateSignature.delete(plan.getText() , plan.getValues() , UserSignature);
 	} 
 
 	public async deactivateOne(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deactivateOne(userId);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.executeTyped(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async deactivate(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.deactivate(userId);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.executeTyped(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async reactivateOne(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.reactivateOne(userId);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.executeTyped(plan.getText() , plan.getValues() , User);
 	} 
 
 	public async reactivate(userId : number) : Promise<User | null> {
 
 		let plan : DynamicQuery = ProfileQuery.reactivate(userId);
 
-		let user : User | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				user = new User(singleResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return user;
+		return await this.queryTemplate.executeTyped(plan.getText() , plan.getValues() , User);
 	} 
 
 }

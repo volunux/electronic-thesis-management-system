@@ -11,6 +11,8 @@ export class SharedFiveValidationFields extends SharedAllValidationFields {
 
 							.max(150)
 
+							.trim(true)
+
 							.required()
 
 							.label('Title'); }

@@ -11,6 +11,8 @@ export class UserValidationFields extends SharedAllValidationFields {
 
 							.max(20)
 
+							.trim(true)
+
 							.required()
 
 							.label('First Name'); }
@@ -22,6 +24,8 @@ export class UserValidationFields extends SharedAllValidationFields {
 							.min(1)
 
 							.max(20)
+
+							.trim(true)
 
 							.required()
 
@@ -49,6 +53,8 @@ export class UserValidationFields extends SharedAllValidationFields {
 
 							.max(20)
 
+							.trim(true)
+
 							.required()
 
 							.label('Username'); }
@@ -61,6 +67,8 @@ export class UserValidationFields extends SharedAllValidationFields {
 
 							.max(300)
 
+							.trim(true)
+
 							.required()
 
 							.label('About'); }
@@ -72,6 +80,8 @@ export class UserValidationFields extends SharedAllValidationFields {
 							.min(10)
 
 							.max(15)
+
+							.trim(true)
 
 							.required()
 

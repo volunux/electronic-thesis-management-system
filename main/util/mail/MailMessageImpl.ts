@@ -19,4 +19,9 @@ export class MailMessageImpl {
 		return this.body;
 	}
 
+	public setBody(body : string) : void {
+
+		this.body = body;
+	}
+
 }

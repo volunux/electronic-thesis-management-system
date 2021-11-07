@@ -13,7 +13,7 @@ export class OrderStatusQuery {
 
 		let text : string = `
 
-		SELECT os.order_status_id AS _id , os.title , os.updated_on , os.slug , os.description
+		SELECT os._id , os.title , os.updated_on , os.slug , os.description
 
 		FROM ORDER_STATUS AS os
 
@@ -35,9 +35,9 @@ export class OrderStatusQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'title') { $sq = OrderStatusQuery.search.label(<string>q.getParameter('search')); }
 
@@ -52,7 +52,7 @@ export class OrderStatusQuery {
 
 		let text : string = `
 
-			SELECT os.title , os.updated_on , os.order_status_no AS num , os.slug
+			SELECT os.title , os.updated_on , os._id AS num , os.slug
 
 			FROM ORDER_STATUS AS os
 
@@ -73,11 +73,11 @@ export class OrderStatusQuery {
 
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO ORDER_STATUS (title , description , order_status_no , slug , user_id)
+		let text : string = `INSERT INTO ORDER_STATUS (title , description , slug , user_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5)
+													VALUES ($1 , $2 , $3 , $4)
 
-													RETURNING order_status_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
@@ -105,7 +105,7 @@ export class OrderStatusQuery {
 
 													WHERE slug = $5
 
-													RETURNING order_status_id AS _id , title , slug
+													RETURNING _id , title , slug
 
 												`;
 
@@ -143,7 +143,7 @@ export class OrderStatusQuery {
 
 		WHERE slug = $1 
 
-		RETURNING order_status_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -159,9 +159,9 @@ export class OrderStatusQuery {
 
 		DELETE FROM ORDER_STATUS
 
-		WHERE order_status_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING order_status_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -191,7 +191,7 @@ export class OrderStatusQuery {
 
 		DELETE FROM ORDER_STATUS
 
-		RETURNING order_status_id AS _id , title , slug
+		RETURNING _id , title , slug
 
 		`;
 
@@ -223,7 +223,7 @@ export class OrderStatusQuery {
 
 		let text : string = `
 
-		SELECT os.title , os.description , os.slug , os.order_status_id AS status
+		SELECT os.title , os.description , os.slug , os._id AS status
 
 		FROM ORDER_STATUS AS os
 

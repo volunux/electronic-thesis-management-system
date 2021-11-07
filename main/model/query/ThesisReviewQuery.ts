@@ -13,7 +13,7 @@ export class ThesisReviewQuery {
 
 		let text : string = `
 
-			SELECT threv.thesis_review_id AS _id , threv.text , threv.updated_on , threv.slug , threv.description , gs.word AS status
+			SELECT threv._id , threv.text , threv.updated_on , threv.slug , threv.description , gs.word AS status
 
 			FROM THESIS_REVIEW AS threv
 
@@ -37,9 +37,9 @@ export class ThesisReviewQuery {
 
 		let p : number = +(<string>q.getParameter('page'));
 
-		if (q != null && q != undefined) { 
+		if (q !== null && q !== undefined) { 
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = ThesisReviewQuery.search.status(<string>q.getParameter('search')); }
 
@@ -54,7 +54,7 @@ export class ThesisReviewQuery {
 
 		let text : string = `
 
-			SELECT threv.text , threv.updated_on , threv.thesis_review_no AS num , threv.slug , gs.word AS status
+			SELECT threv.text , threv.updated_on , threv._id AS num , threv.slug , gs.word AS status
 
 			FROM THESIS_REVIEW AS threv
 
@@ -77,15 +77,15 @@ export class ThesisReviewQuery {
 
 		let s : string = (crypto({'length' : 29 , 'type' : 'alphanumeric'})).toLowerCase();
 
-		let text : string = `INSERT INTO THESIS_REVIEW (text , thesis_review_no , slug , user_id , status_id)
+		let text : string = `INSERT INTO THESIS_REVIEW (text , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
-													RETURNING thesis_review_id AS _id , slug
+													RETURNING _id , slug
 
 												`;
 
-		let values : any[] = [entry.getText() , c , s , entry.getUserId()];
+		let values : any[] = [entry.getText() , s , entry.getUserId()];
 
 		return DynamicQuery.create(text , values);
 
@@ -117,7 +117,7 @@ export class ThesisReviewQuery {
 
 			'Status' , (SELECT json_agg(row_to_json(gs)) 
 
-									FROM (SELECT status_id AS _id , word 
+									FROM (SELECT _id , word 
 
 									FROM STATUS) AS gs )
 
@@ -193,9 +193,9 @@ export class ThesisReviewQuery {
 
 		DELETE FROM THESIS_REVIEW
 
-		WHERE thesis_review_no IN (${entries})
+		WHERE _id IN (${entries})
 
-		RETURNING thesis_review_id AS _id , text , word , slug
+		RETURNING _id , text , word , slug
 
 		`;
 
@@ -224,7 +224,7 @@ export class ThesisReviewQuery {
 
 		DELETE FROM THESIS_REVIEW
 
-		RETURNING thesis_review_id AS _id , text , word , slug
+		RETURNING _id , text , word , slug
 
 		`;
 

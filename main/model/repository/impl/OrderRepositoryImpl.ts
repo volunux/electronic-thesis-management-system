@@ -1,4 +1,8 @@
 import { QueryResult , QueryResultRow } from 'pg';
+import { QueryTemplate } from '../../query/util/QueryTemplate';
+import { SimpleQueryTemplate } from '../../query/util/SimpleQueryTemplate';
+import { RowMapper } from '../../mapper/RowMapper';
+import { OrderRowMapper } from '../../mapper/OrderRowMapper';
 import { Query } from '../../query/util/Query';
 import { DynamicQuery } from '../../query/util/DynamicQuery';
 import { EntityQueryConfig } from '../../query/util/EntityQueryConfig';
@@ -15,29 +19,24 @@ import { Order } from '../../../entity/Order';
 
 export class OrderRepositoryImpl implements OrderRepository {
 
+	private queryTemplate : QueryTemplate<Order> = new SimpleQueryTemplate<Order>();
+
 	public async findOne(slug : string) : Promise<Order | null> {
 
 		let plan : DynamicQuery = OrderQuery.findOne(slug);
 
 		let order : Order | null = null;
 
-		try {
+		let entry : Object | null = await this.queryTemplate.executePlain(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
+		if (entry !== null) {
 
 				order = new Order(0 , 0 , 0 , 0 , 0 , new Date() , new Date());
 
-				OrderRepositoryImpl.setOrder(singleResult , order);
+				OrderRepositoryImpl.setOrder(entry , order);
 
 				order.setOrderItems(await this.findOrderItems(order.getOrderId()));
-
 		}
-
-		} catch(err : any) { console.log('An error has occured'); }
 
 		return order;
 	}
@@ -46,16 +45,11 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 		let plan : DynamicQuery = OrderQuery.findOrderItems(id);
 
-		let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+		let result : Object[] = await this.queryTemplate.executePlainList(plan.getText() , plan.getValues());
 
 		let entries : OrderItem[] = [];
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				entries = OrderRepositoryImpl.mapOrderItems(listResult , id);
-		} 
+		entries = OrderRepositoryImpl.mapOrderItems(result , id);
 
 		return entries;
 	}
@@ -64,59 +58,21 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 		let plan : DynamicQuery = OrderQuery.existsOne(slug);
 
-		let order : Order | null = null;
-
-		let exists : boolean = false;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0 , 0 , 0 , 0 , 0 , new Date() , new Date());
-
-				exists = true;
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return exists;
+		return await this.queryTemplate.existsOne(plan.getText() , plan.getValues());
 	} 
 
 	public async findAll(eqp : EntityQueryConfig) : Promise<Order[]> {
 
 		let plan : DynamicQuery = OrderQuery.findAll(eqp);
 
-		let orders : Order[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				orders = OrderRepositoryImpl.rowToOrderMapper<Order>(listResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return orders;
+		return await this.queryTemplate.findAllAndSetWithRowMapper(plan.getText() , plan.getValues() , new OrderRowMapper());
 	} 
 
 	public async addOne() : Promise<Order> {
 
 		let order : Order = new Order(0 , 0 , 0 , 0 , 0 , new Date() , new Date());
 
-		try {
-
-			await this.relatedEntities(order);
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(order);
 
 		return order;
 	} 
@@ -125,44 +81,16 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 		let plan : DynamicQuery = OrderQuery.save(<Order>entry);
 
-		let order : Order | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0 , 0 , 0 , 0 , 0 , new Date() , new Date());
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return order;
+		return await this.queryTemplate.save(plan.getText() , plan.getValues() , <any>Order);
 	}
 
 	public async updateOne(slug : string) : Promise<Order | null> {
 
 		let plan : DynamicQuery = OrderQuery.updateOne(slug);
 
-		let order : Order | null = null;
+		let order : Order | null = await this.queryTemplate.updateOne(plan.getText() , plan.getValues() , <any>Order);
 
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0 , 0 , 0 , 0 , 0 , new Date() , new Date());
-
-				await this.relatedEntities(order);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+		await this.relatedEntities(<Order>order);
 
 		return order;
 	}
@@ -173,20 +101,15 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 		let orderStatuses : OrderStatus[] = [];
 
-		try {
+		let result : Object | null = await this.queryTemplate.relatedEntities(plan.getText() , plan.getValues());
 
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
+			if (result !== null && entry !== null) {
 
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = (<QueryResultRow>result.rows[0]).result.OrderStatus;
+				let listResult : QueryResultRow[] = (<any>result).OrderStatus;
 
 				orderStatuses = ServiceHelper.rowsToObjectMapper<OrderStatus>(listResult , OrderStatus);
 
-				entry.setStatuses(orderStatuses);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
+				entry.setStatuses(orderStatuses); }
 
 		return entry;
 	} 
@@ -195,163 +118,42 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 		let plan : DynamicQuery = OrderQuery.update(slug , <Order>entry);
 
-		let order : Order | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0  , 0 , 0 , 0 , 0 , new Date() , new Date());
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return order;
+		return await this.queryTemplate.update(plan.getText() , plan.getValues() , <any>Order);
 	}
 
 	public async deleteOne(slug : string) : Promise<Order | null> {
 
 		let plan : DynamicQuery = OrderQuery.deleteOne(slug);
 
-		let order : Order | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0  , 0 , 0 , 0 , 0 , new Date() , new Date());
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return order;
+		return await this.queryTemplate.deleteOne(plan.getText() , plan.getValues() , <any>Order);
 	} 
 
 	public async remove(slug : string) : Promise<Order | null> {
 
 		let plan : DynamicQuery = OrderQuery.remove(slug);
 
-		let order : Order | null = null;
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let singleResult : QueryResultRow = result.rows[0];
-
-				order = new Order(0  , 0 , 0 , 0 , 0 , new Date() , new Date());
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return order;
+		return await this.queryTemplate.delete(plan.getText() , plan.getValues() , <any>Order);
 	} 
 
 	public async deleteMany(entries : string) : Promise<Order[]> {
 
 		let plan : DynamicQuery = OrderQuery.deleteMany(entries);
 
-		let orders : Order[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				orders = OrderRepositoryImpl.rowToOrderMapper<Order>(listResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return orders;
+		return await this.queryTemplate.deleteMany(plan.getText() , plan.getValues() , <any>Order);
 	}
 
 	public async deleteAll() : Promise<Order[]> {
 
 		let plan : DynamicQuery = OrderQuery.deleteAll();
 
-		let orders : Order[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				orders = OrderRepositoryImpl.rowToOrderMapper<Order>(listResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return orders;
+		return await this.queryTemplate.deleteAll(plan.getText() , plan.getValues() , <any>Order);
 	}
 
 	public async findAndDeleteAll() : Promise<Order[]> {
 
 		let plan : DynamicQuery = OrderQuery.findAndDeleteAll();
 
-		let orders : Order[] = [];
-
-		try {
-
-			let result : QueryResult = await Query.execute(plan.getText() , plan.getValues());
-
-			if ((<QueryResultRow[]>result.rows).length > 0) {
-
-				let listResult : QueryResultRow[] = result.rows;
-
-				orders = OrderRepositoryImpl.rowToOrderMapper<Order>(listResult);
-			}
-
-		} catch(err : any) { console.log('An error has occured'); }
-
-		return orders;
-	}
-
-	private static rowToOrderMapper<T extends Order>(rowsData : QueryResultRow[]) : Order[] {
-
-		let entries : Order[] = [];
-
-		if (rowsData != null) {
-
-			rowsData.forEach((record : QueryResultRow) => {
-
-				let entry : Order = new Order(0  , 0 , 0 , 0 , 0 , new Date() , new Date());
-				let shippingDetail : ShippingDetail = new ShippingDetail({});
-				let orderStatus : OrderStatus = new OrderStatus({});
-
-				entry.setOrderId(record.order_id);
-				entry.setShippingDetail(shippingDetail);
-				entry.setOrderStatus(orderStatus);
-				entry.setAmount(record.amount);
-				entry.setQuantity(record.quantity);
-				entry.setOrderId(record._id);
-				entry.setSlug(record.slug);
-				entry.setOrderNo(record.num);
-				entry.setCreatedOn(<Date>record.created_on);
-				entry.setUpdatedOn(<Date>record.updated_on);
-				entry.setOrderReference(record.order_reference);
-				shippingDetail.setCity(record.city);
-				orderStatus.setTitle(record.status);
-
-					entries.push(entry); }); }
-
-			return entries;
+		return await this.queryTemplate.findAndDeleteAll(plan.getText() , plan.getValues() , <any>Order);
 	}
 
 	private static setOrder(record : QueryResultRow , entry : Order) : void {
@@ -412,3 +214,4 @@ export class OrderRepositoryImpl implements OrderRepository {
 
 
 }
+

@@ -18,7 +18,7 @@ export class DocumentMagic implements AbstractFileMagic {
 		this.signatureList.set('doc' , '0D444F43');
 		this.signatureList.set('docx2' , 'DBA52D00');
 		this.signatureList.set('docx3' , 'D0CF11E0');
-
+		this.signatureList.set('docx4' , '504b0304');
 	}
 
 	public getSignature(key : string) : string | undefined {
@@ -32,7 +32,7 @@ export class DocumentMagic implements AbstractFileMagic {
 
 		if (magic == this.getSignature('pdf') || magic == this.getSignature('docx') || magic == this.getSignature('doc') 
 
-			|| magic == this.getSignature('docx2') || magic == this.getSignature('docx3')) { return true; } 
+			|| magic == this.getSignature('docx2') || magic == this.getSignature('docx3') || magic == this.getSignature('docx4')) { return true; } 
 
 		else { return false; }
 	}

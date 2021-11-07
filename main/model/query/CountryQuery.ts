@@ -39,7 +39,7 @@ export class CountryQuery {
 
 		if (q !== null && q !== undefined) {
 
-			p = p > 0 ? p * 10 : 0;
+			p = p > 0 ? (p - 1) * 10 : 0;
 
 			if (q.getParameter('type') === 'status') { $sq = CountryQuery.search.status(<string>q.getParameter('search')); }
 
@@ -81,7 +81,7 @@ export class CountryQuery {
 
 		let text : string = `INSERT INTO COUNTRY (name , abbreviation , description , slug , user_id , status_id)
 
-													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT status_id AS _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
+													VALUES ($1 , $2 , $3 , $4 , $5 , (SELECT _id FROM STATUS AS gs WHERE gs.word = 'Active' LIMIT 1))
 
 													RETURNING _id , name , abbreviation , slug
 

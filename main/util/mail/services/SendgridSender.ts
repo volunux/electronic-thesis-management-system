@@ -25,7 +25,7 @@ export class SendgridSender {
 
      Sendgrid.send(response , false , function(err : Error , result : any) {
 
-			if (err) { console.log(err); }
+			if (err) { console.log((<any>err).response.body); }
 
 			else { console.log(result); }
 		
